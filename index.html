@@ -1,27 +1,11 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html>
 <head>
 <meta charset="UTF-8">
-<title>M3U Görüntüleyici</title>
-<style>
-  body { font-family: monospace; white-space: pre; background: #111; color: #0f0; padding: 20px; }
-</style>
+<title>IPTV Playlist</title>
+<meta http-equiv="refresh" content="0; url=AliTv.m3u">
 </head>
 <body>
-
-<h2>M3U Dosyası İçeriği</h2>
-<pre id="icerik">Yükleniyor...</pre>
-
-<script>
-fetch("AliTv.m3u")
-  .then(response => response.text())
-  .then(data => {
-    document.getElementById("icerik").textContent = data;
-  })
-  .catch(error => {
-    document.getElementById("icerik").textContent = "Dosya yüklenemedi!";
-  });
-</script>
-
+<a href="AliTv.m3u">Playlisti açmak için tıklayın</a>
 </body>
 </html>
