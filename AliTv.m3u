@@ -1,8 +1,7 @@
 #EXTM3U
 
-#EXTINF:0 type="stream" group-title="İnstagram: ali_hsyn3🫠" tvg-copyright="@ali_hsyn3" tvg-id="" tvg-logo="http://logocubaba.duckdns.org:8080/LOGO/AZ/AZERBAYCAN.BAYRAKK.png",XOŞ İZLƏMƏLƏR🙂
+#EXTINF:0 group-title="Ali.Tv📺" tvg-copyright="@ali_hsyn3" tvg-logo="http://logocubaba.duckdns.org:8080/LOGO/AZ/AZERBAYCAN.BAYRAKK.png",İnsta: ali_hsyn3
 http://nrvmobil.com:2095/tncy2286/tncy.2286/158052
-
 #EXTM3U
 
 #EXTINF:0 type="stream" tvg-logo="" group-title="Azerbaycan🇦🇿" copyright="@ali_hsyn3",Azad Azərbaycan
