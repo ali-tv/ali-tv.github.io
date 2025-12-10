@@ -1,6 +1,8 @@
 #EXTM3U
-#EXTINF:0 type="stream" channelId="2550" group-title="İnstagram: ali_hsyn3🫠" tvg-copyright="@ali_hsyn3" tvg-id="" tvg-logo="http://logocubaba.duckdns.org:8080/LOGO/AZ/AZERBAYCAN.BAYRAKK.png",XOŞ İZLƏMƏLƏR:)
+
+#EXTINF:0 type="stream" group-title="İnstagram: ali_hsyn3🫠" tvg-copyright="@ali_hsyn3" tvg-id="" tvg-logo="http://logocubaba.duckdns.org:8080/LOGO/AZ/AZERBAYCAN.BAYRAKK.png",XOŞ İZLƏMƏLƏR🙂
 http://nrvmobil.com:2095/tncy2286/tncy.2286/158052
+
 #EXTM3U
 
 #EXTINF:0 type="stream" tvg-logo="" group-title="Azerbaycan🇦🇿" copyright="@ali_hsyn3",Azad Azərbaycan
@@ -69,7 +71,82 @@ http://185.32.44.154/sehiyye/index.m3u8
 #EXTINF:0 type="stream" tvg-logo="" group-title="Azerbaycan🇦🇿" copyright="@ali_hsyn3",HADI TV-3 (Azerbaycan)
 https://live.ishiacloud.com/hls/1d6e10dc-7bfc-4abb-9bb3-0dfe80b3d7df_360p.m3u8
 
+#EXTM3U
 
+#EXTINF:0 type="stream" tvg-logo="" group-title="Türkiye🇹🇷" copyright="@ali_hsyn3",Lalegul TV (TURK) Dini Kanal
+https://lbl.netmedya.net/hls/lalegultv.m3u8
+
+#EXTINF:0 type="stream" tvg-logo="" group-title="Türkiye🇹🇷" copyright="@ali_hsyn3",DIYANET TV (TURK) Dini Kanal
+https://yayin30.haber100.com/live/diyartv/chunklist_w1527287330.m3u8
+
+#EXTINF:0 type="stream" tvg-logo="" group-title="Türkiye🇹🇷" copyright="@ali_hsyn3",AL-ZAHRA Dini Kanal
+http://live.al-zahratv.com/live/playlist.m3u8
+
+#EXTINF:0 type="stream" tvg-logo="" group-title="Türkiye🇹🇷" copyright="@ali_hsyn3",TRT 1
+http://flussonic.izone.az:80/trt1/index.m3u8
+
+#EXTINF:0 type="stream" tvg-logo="" group-title="Türkiye🇹🇷" copyright="@ali_hsyn3",TRT AVAZ
+http://flussonic.izone.az:80/trtavaz/index.m3u8
+
+#EXTINF:0 type="stream" tvg-logo="" group-title="Türkiye🇹🇷" copyright="@ali_hsyn3",TRT Belgesel
+http://flussonic.izone.az:80/trtbelgesel/index.m3u8
+
+#EXTINF:0 type="stream" tvg-logo="" group-title="Türkiye🇹🇷" copyright="@ali_hsyn3",Show TV
+http://flussonic.izone.az:80/showtv/index.m3u8
+
+#EXTINF:0 type="stream" tvg-logo="" group-title="Türkiye🇹🇷" copyright="@ali_hsyn3",ATV Türkiye HD
+http://erlyvideo.izone.az:80/atvhd/index.m3u8
+
+#EXTINF:0 type="stream" tvg-logo="" group-title="Türkiye🇹🇷" copyright="@ali_hsyn3",ATV Türkiye
+http://flussonic.izone.az:80/atvturk/index.m3u8
+
+#EXTINF:0 type="stream" tvg-logo="" group-title="Türkiye🇹🇷" copyright="@ali_hsyn3",Star TV HD
+http://erlyvideo.izone.az:80/starhd/index.m3u8
+
+#EXTINF:0 type="stream" tvg-logo="" group-title="Türkiye🇹🇷" copyright="@ali_hsyn3",Star TV
+http://flussonic.izone.az:80/startv/index.m3u8
+
+#EXTINF:0 type="stream" tvg-logo="" group-title="Türkiye🇹🇷" copyright="@ali_hsyn3",KANAL D
+https://demiroren-live.daioncdn.net/kanald/kanald_1080p.m3u8
+
+#EXTINF:0 type="stream" tvg-logo="" group-title="Türkiye🇹🇷" copyright="@ali_hsyn3",EURO D HD
+https://live.duhnet.tv/S2/HLS_LIVE/eurodnp/playlist.m3u8
+
+#EXTINF:0 type="stream" tvg-logo="" group-title="Türkiye🇹🇷" copyright="@ali_hsyn3",DMAX TR
+http://flussonic.izone.az:80/ntvsport/index.m3u8
+
+#EXTINF:0 type="stream" tvg-logo="" group-title="Türkiye🇹🇷" copyright="@ali_hsyn3",FOX HD (Turk)
+https://foxtv.blutv.com/blutv_foxtv_live/live.m3u8
+
+#EXTINF:0 type="stream" tvg-logo="" group-title="Türkiye🇹🇷" copyright="@ali_hsyn3",Kanal 7
+https://kanal7.blutv.com/blutv_kanal7_live/live.m3u8
+
+#EXTINF:0 type="stream" tvg-logo="" group-title="Türkiye🇹🇷" copyright="@ali_hsyn3",Kanal 7 Avrupa
+https://live.kanal7.com/live/kanal7AvrupaLive/index.m3u8
+
+#EXTINF:0 type="stream" tvg-logo="" group-title="Türkiye🇹🇷" copyright="@ali_hsyn3",TV8
+http://flussonic.izone.az:80/tv8/index.m3u8
+
+#EXTINF:0 type="stream" tvg-logo="" group-title="Türkiye🇹🇷" copyright="@ali_hsyn3",TV 8 Int
+http://flussonic.izone.az:80/tv8int/index.m3u8
+
+#EXTINF:0 type="stream" tvg-logo="" group-title="Türkiye🇹🇷" copyright="@ali_hsyn3",Teve 2
+https://teve2.duhnet.tv/S2/HLS_LIVE/teve2np/track_3_750/playlist.m3u8
+
+#EXTINF:0 type="stream" tvg-logo="" group-title="Türkiye🇹🇷" copyright="@ali_hsyn3",BEYAZ TV HD
+https://beyaztvdvr.blutv.com/blutv_beyaztv_dvr2/live_720p2000000kbps/index.m3u8
+
+#EXTINF:0 type="stream" tvg-logo="" group-title="Türkiye🇹🇷" copyright="@ali_hsyn3",TV4 FILM
+https://turkmedya-live.ercdn.net/tv4/tv4_720p.m3u8
+
+#EXTINF:0 type="stream" tvg-logo="" group-title="Türkiye🇹🇷" copyright="@ali_hsyn3",Cine 1 Tv
+https://live.artidijitalmedya.com/artidijital_cine1/cine1/chunks.m3u8
+
+#EXTINF:0 type="stream" tvg-logo="" group-title="Türkiye🇹🇷" copyright="@ali_hsyn3",CLC
+https://clcmediatv.ozelip.com:3192/stream/play.m3u8
+
+#EXTINF:0 type="stream" tvg-logo="" group-title="Türkiye🇹🇷" copyright="@ali_hsyn3",TLC Turk
+http://flussonic.izone.az:80/tlcturk/index.m3u8
 
 
 #EXTM3U
