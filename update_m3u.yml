@@ -100,8 +100,8 @@ def fetch_source(url, timeout=15, user_agent=None):
 
 def main():
     p = argparse.ArgumentParser(description="M3U downloader + rewriter")
-    p.add_argument('--source', '-s', required=True, help='Uzaktaki m3u URL')
-    p.add_argument('--output', '-o', required=True, help='Çıkış dosyası (ör. ali_filmler.m3u)')
+    p.add_argument('--source', '-s', required=True, help='https://raw.githubusercontent.com/GitLatte/patr0n/refs/heads/site/lists/power-sinema.m3u')
+    p.add_argument('--output', '-o', required=True, help='AliTv.m3u')
     p.add_argument('--group', '-g', default='Filmler🎭', help='group-title değeri (default: Filmler🎭)')
     p.add_argument('--copyright', '-c', default='@ali_hsyn3', help='copyright değeri (default: @ali_hsyn3)')
     p.add_argument('--timeout', type=int, default=15, help='İstek zaman aşımı saniye (default 15)')
