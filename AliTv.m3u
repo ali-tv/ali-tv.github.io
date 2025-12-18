@@ -1,8 +1,8 @@
 #EXTM3U
-#EXTINF:0 type="stream" channelId="2550" group-title="Ali.Tv📺" tvg-copyright="@ali_hsyn3" tvg-id="" tvg-logo="https://raw.githubusercontent.com/ali-tv/ali-tv.github.io/920f3e8285a3eff0bdf84e95542363a8af5797ef/Ali.Tv.png",✦✦İg:ali_hsyn3✦✦
+#EXTINF: type="stream" group-title="Ali.Tv📺" tvg-copyright="@ali_hsyn3" tvg-id="AliTv" tvg-logo="https://raw.githubusercontent.com/ali-tv/ali-tv.github.io/920f3e8285a3eff0bdf84e95542363a8af5797ef/Ali.Tv.png",✦✦İg:ali_hsyn3✦✦
 http://185.57.68.33:8091/232/tracks-v1a1/index.m3u8
 
-#EXTM3U
+#Azerbaycan
 #EXTINF: tvg-copyright="@ali_hsyn3" -1 group-title="Azerbaycan🇦🇿" tvg-id="DunyaTV.tr" tvg-logo="https://cdn.technettv.com/channel/14757/logo_256_1659593250.png" ,Dünya TV
 https://boncuktv.sende-mi-brutus.workers.dev/dunyatv
 #EXTINF: tvg-copyright="@ali_hsyn3" -1 group-title="Azerbaycan🇦🇿" tvg-id="GunAzTV.tr" tvg-logo="https://cdn.technettv.com/channel/14778/logo_256_1659593579.png" ,GunAz TV
@@ -42,8 +42,6 @@ https://boncuktv.sende-mi-brutus.workers.dev/livetvaz
 
 
 
-
-#EXTM3U
 #EXTINF:-1 tvg-id="549830" tvg-name="TR: B**NSPORTS 1 HD+ 50 FPS ⚽️" group-title="Spor⚽" tvg-copyright="@ali_hsyn3",TR: B**NSPORTS 1 HD+ 50 FPS ⚽️
 http://19112025main1.xyz:8080/live/07ert154/ert1907/549830
 #EXTINF:-1 tvg-id="549840" tvg-name="TR: B**NSPORTS 1 sᴅ (576p) ⚽️" group-title="Spor⚽" tvg-copyright="@ali_hsyn3",TR: B**NSPORTS 1 sᴅ (576p) ⚽️
@@ -182,7 +180,7 @@ http://19112025main1.xyz:8080/live/07ert154/ert1907/550968
 
 
 
-#EXTM3U
+
 
 #EXTINF:0 tvg-country="TR/Yabancı Dil" tvg-language="TR/EN" type="video" tvg-logo="https://m.media-amazon.com/images/M/MV5BZGQ5ZTcxYTItNzA1Ny00MTk4LTk1MjgtZDY3NjdmYmM3MDFmXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg" group-title="Filmler🎭" tvg-copyright="@ali_hsyn3",La plus précieuse des marchandises-En Değerli Hazine(2024)Dram-Trajedi
 https://vidmody.com/vs/tt10462154/
