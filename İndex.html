@@ -268,7 +268,6 @@
                 <p style="font-weight:bold;">SQUELCHING TIMELINE...</p>
             </div>
 
-            <!-- Yenilənmiş Şəkil URL -->
             <img src="https://raw.githubusercontent.com/ali-tv/ali-tv.github.io/main/IMG_20260131_135801_925.jpg" class="custom-avatar" alt="Loki Variant">
             <h1 class="tva-logo">TVA</h1>
             
@@ -301,8 +300,10 @@
         <div class="container" id="result-section" style="text-align:center;">
             <p style="color: var(--tva-orange); font-size: 0.8rem;">SYNC COMPLETE</p>
             <div id="final-char" class="result-title">LOKI</div>
-            <div style="font-size: 1.5rem; margin-bottom: 20px;" id="final-score">100%</div>
+            <div style="font-size: 1.5rem; margin-bottom: 10px;" id="final-score">100%</div>
             
+            <div style="font-size: 0.7rem; color: #888; margin-bottom: 10px;" id="ver-num">v00.REV.0000-AY</div>
+
             <div style="border: 1px solid #333; padding: 15px; text-align: left; background: #000; font-size: 0.85rem; flex-grow: 1; overflow-y: auto;">
                 <p id="final-reason" style="line-height: 1.5;"></p>
             </div>
@@ -321,6 +322,17 @@
         else if (elem.webkitRequestFullscreen) elem.webkitRequestFullscreen();
     }
 
+    function generateVersion(dateStr) {
+        // "2000-05-15" -> y: 2000, m: 05, d: 15
+        if(!dateStr) return "v1.0.0-PROTOTYPE";
+        const parts = dateStr.split('-');
+        const y = parts[0];
+        const m = parts[1];
+        const d = parts[2];
+        // Format: v2000.REV.1505-AY
+        return `v${y}.REV.${d}${m}-AY`;
+    }
+
     function accessTerminal() {
         const dateInput = document.getElementById('birthdate').value;
         if(!dateInput) return;
@@ -328,7 +340,6 @@
         openFullscreen();
         birthDate = dateInput;
         
-        // Varyant Təsbit Ekranını Göstər
         const alertOverlay = document.getElementById('alert-overlay');
         alertOverlay.style.display = 'flex';
         
@@ -336,7 +347,7 @@
             document.getElementById('login-screen').style.display = 'none';
             document.getElementById('quiz-container').style.display = 'flex';
             renderQuestion();
-        }, 2500); // 2.5 saniyə xəbərdarlıq görünür
+        }, 2500);
     }
 
     const questions = [
@@ -396,6 +407,10 @@
     function showFinal() {
         document.getElementById('quiz-container').style.display = 'none';
         document.getElementById('result-section').style.display = 'flex';
+        
+        // Versiya nömrəsini gizli formada yazdır
+        document.getElementById('ver-num').innerText = generateVersion(birthDate);
+
         const sc = Math.round((score/30)*100);
         document.getElementById('final-score').innerText = `${sc}% SYNC`;
         const char = document.getElementById('final-char');
