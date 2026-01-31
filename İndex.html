@@ -15,25 +15,393 @@
             --tva-text: #ffb366;
         }
 
+        * {
+            box-sizing: border-box; /* Bu çox önəmlidir, elementlərin daşmasının qarşısını alır */
+        }
+
         body {
             background-color: var(--tva-bg);
             color: var(--tva-text);
             font-family: 'Courier Prime', monospace;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
             margin: 0;
+            padding: 0;
             background-image: 
                 linear-gradient(var(--tva-grid) 1px, transparent 1px),
                 linear-gradient(90deg, var(--tva-grid) 1px, transparent 1px);
             background-size: 25px 25px;
             overflow: hidden;
-            /* Mobil scroll-u bağlamaq üçün */
-            position: fixed; 
-            width: 100%;
-            height: 100%;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
+
+        /* --- ZORLA YATAY REJİM (TƏKMİLLƏŞDİRİLMİŞ VERSİYA) --- */
+        /* Ekran dikdirsə (Portrait), mərkəzdən fırladırıq */
+        @media screen and (orientation: portrait) {
+            #main-wrapper {
+                transform: translate(-50%, -50%) rotate(90deg);
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                width: 100vh;  /* Hündürlük en olur */
+                height: 100vw; /* En hündürlük olur */
+                overflow-y: auto; /* Məzmun sığmazsa scroll olsun */
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+        }
+
+        /* Ekran yandırsa (Landscape), normal görünür */
+        @media screen and (orientation: landscape) {
+            #main-wrapper {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                overflow-y: auto;
+            }
+        }
+
+        /* Scanline Effect */
+        body::before {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 1000;
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+        }
+
+        /* --- TVA LOGIN --- */
+        #login-screen {
+            text-align: center;
+            padding: 20px;
+            border: 3px solid var(--tva-orange);
+            background: rgba(13, 13, 13, 0.95);
+            box-shadow: 0 0 30px rgba(255, 132, 0, 0.3);
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh; /* Ekrandan çıxmasın */
+            overflow-y: auto; /* Balaca ekranlarda scroll olsun */
+        }
+
+        .tva-logo {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 15vw; /* Mobil üçün responsive şrift */
+            color: var(--tva-orange);
+            margin: 0;
+            line-height: 1;
+            letter-spacing: 5px;
+        }
+
+        /* Landscape-də logo çox böyük olmasın */
+        @media screen and (min-width: 600px) or (orientation: landscape) {
+            .tva-logo { font-size: 5rem; }
+        }
+
+        .miss-minutes {
+            width: 25vw; /* Ekranın 25%-i qədər */
+            max-width: 120px;
+            height: auto;
+            margin: 10px 0;
+            animation: bounce 2s infinite;
+            filter: drop-shadow(0 0 15px var(--tva-orange));
+        }
+
+        input[type="date"] {
+            background: transparent;
+            border: 2px solid var(--tva-orange);
+            color: var(--tva-orange);
+            padding: 10px;
+            font-family: 'Courier Prime', monospace;
+            font-size: 1rem;
+            margin: 15px 0;
+            width: 100%;
+            text-align: center;
+            outline: none;
+        }
+
+        .btn-tva {
+            background: var(--tva-orange);
+            color: black;
+            border: none;
+            padding: 12px 20px;
+            font-weight: bold;
+            font-family: 'Courier Prime', monospace;
+            text-transform: uppercase;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1rem;
+            transition: 0.3s;
+            margin-bottom: 10px;
+        }
+
+        .btn-tva:active {
+            transform: scale(0.98);
+        }
+
+        /* --- TERMINAL CONTAINER --- */
+        .container {
+            width: 95%;
+            height: 95%; /* Demək olar ki tam ekran */
+            border: 2px solid var(--tva-orange);
+            background: rgba(13, 13, 13, 0.98);
+            padding: 15px;
+            display: none;
+            flex-direction: column;
+            box-shadow: 0 0 50px rgba(0,0,0,1);
+            overflow-y: auto; /* Məzmun daşarsa scroll */
+        }
+
+        .terminal-header {
+            border-bottom: 2px solid var(--tva-orange);
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            font-size: 0.7rem;
+            flex-shrink: 0;
+        }
+
+        .question-box {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--tva-orange);
+            padding-left: 15px;
+            flex-shrink: 0;
+        }
+
+        .options-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        .option-item {
+            border: 1px solid var(--tva-orange);
+            padding: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: rgba(255, 132, 0, 0.05);
+            font-size: 0.9rem;
+        }
+
+        .option-item:active {
+            background: var(--tva-orange);
+            color: black;
+        }
+
+        .progress-container {
+            margin-top: 15px;
+            height: 6px;
+            background: #222;
+            border: 1px solid var(--tva-orange);
+            flex-shrink: 0;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--tva-orange);
+            width: 0%;
+            transition: 0.3s;
+        }
+
+        /* --- FINAL SCREEN --- */
+        .result-title {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 3rem;
+            color: white;
+            margin: 0;
+            text-shadow: 0 0 20px var(--tva-orange);
+        }
+        
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+        
+    </style>
+</head>
+<body>
+
+    <!-- Bütün məzmunu əhatə edən Wrapper (Döndərmə bunun üzərində işləyir) -->
+    <div id="main-wrapper">
+
+        <!-- GİRİŞ SƏHİFƏSİ -->
+        <div id="login-screen">
+            <img src="https://static.wikia.nocookie.net/marvelcinematicuniverse/images/3/3d/Miss_Minutes_AI_Profile.png" class="miss-minutes" alt="Miss Minutes">
+            <h1 class="tva-logo">TVA</h1>
+            <p style="letter-spacing: 2px; font-size: 0.8rem;">FOR ALL TIME. ALWAYS.</p>
+            
+            <div style="margin-top: 20px;">
+                <p style="font-size: 0.7rem;">VARIANT TƏSDİQLƏNMƏSİ TƏLƏB OLUNUR</p>
+                <input type="date" id="birthdate">
+                <button class="btn-tva" onclick="accessTerminal()">GİRİŞ İCAZƏSİ</button>
+            </div>
+            <p id="access-msg" style="margin-top: 10px; font-size: 0.7rem; visibility: hidden; color: var(--tva-text);">SİNXRONİZASİYA...</p>
+        </div>
+
+        <!-- TEST SƏHİFƏSİ -->
+        <div class="container" id="quiz-container">
+            <div class="terminal-header">
+                <span>ID: AYAN_777</span>
+                <span id="q-counter">TIME: 1/30</span>
+            </div>
+            
+            <div class="question-box" id="question">Yüklənir...</div>
+            
+            <div class="options-list" id="options"></div>
+
+            <div class="progress-container">
+                <div class="progress-bar" id="progress"></div>
+            </div>
+        </div>
+
+        <!-- NƏTİCƏ SƏHİFƏSİ -->
+        <div class="container" id="result-section" style="text-align:center; overflow-y: auto;">
+            <p style="color: var(--tva-orange); letter-spacing: 3px; font-size: 0.9rem;">ANALİZ TAMAMLANDI</p>
+            <div id="final-char" class="result-title">LOKI</div>
+            <div style="font-size: 1.2rem; margin: 10px 0;" id="final-score">100% SYNC</div>
+            
+            <div style="border: 1px solid var(--tva-orange); padding: 15px; text-align: left; background: rgba(255,132,0,0.05); font-size: 0.9rem;">
+                <p id="final-reason" style="line-height: 1.4; margin: 0;"></p>
+            </div>
+            
+            <div class="data-log" style="font-size: 0.7rem; margin-top: 20px; color: #666;">
+                REF: <span id="hidden-date">00.00.0000</span> | STATUS: ARCHIVED
+            </div>
+            
+            <button class="btn-tva" style="margin-top:20px;" onclick="location.reload()">RESTART</button>
+        </div>
+
+    </div>
+
+<script>
+    let birthDate = "";
+
+    function openFullscreen() {
+        const elem = document.documentElement;
+        if (elem.requestFullscreen) {
+            elem.requestFullscreen().catch(err => console.log(err));
+        } else if (elem.webkitRequestFullscreen) { 
+            elem.webkitRequestFullscreen();
+        } else if (elem.msRequestFullscreen) { 
+            elem.msRequestFullscreen();
+        }
+    }
+
+    function accessTerminal() {
+        const dateInput = document.getElementById('birthdate').value;
+        if(!dateInput) { alert("Doğum tarixi daxil edilmədidir!"); return; }
+        
+        openFullscreen();
+
+        birthDate = dateInput;
+        document.getElementById('access-msg').style.visibility = 'visible';
+        
+        setTimeout(() => {
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('quiz-container').style.display = 'flex'; // Flex etdik ki düzgün görünsün
+            renderQuestion();
+        }, 1500);
+    }
+
+    const questions = [
+        { q: "Loki-nin ən çox nifrət etdiyi, amma sığındığı qurum?", o: ["S.H.I.E.L.D.", "TVA", "Hydra", "Avengers"], a: 1 },
+        { q: "Tony Stark-ın qəlbindəki 'reaktor' metalı?", o: ["Paladium", "Vibranium", "Polad", "Uru"], a: 0 },
+        { q: "Thor-un 'New Asgard' şəhəri haradadır?", o: ["İsveç", "Norveç", "İngiltərə", "Şotlandiya"], a: 1 },
+        { q: "Infinity War-da Thanos-un neçə övladı var?", o: ["2", "4", "5", "3"], a: 1 },
+        { q: "No Way Home-da neçə 'Peter Parker' var?", o: ["2", "3", "4", "1"], a: 1 },
+        { q: "Wanda Maximoff-un qardaşının ləqəbi?", o: ["Quicksilver", "Speedster", "Flash", "Runner"], a: 0 },
+        { q: "Yelena Belova nədən qorxurdu?", o: ["Hörümçək", "İt", "Ayı", "Sürünənlər"], a: 0 },
+        { q: "Ant-Man hara kiçilib girə bilir?", o: ["Quantum Realm", "Dark Dimension", "Mirror", "Void"], a: 0 },
+        { q: "Doctor Strange-in canlı əşyası?", o: ["Papaq", "Plaş", "Üzük", "Kəmər"], a: 1 },
+        { q: "Groot-un Endgame-dəki yaş dövrü?", o: ["Bebə", "Yeniyetmə", "Yaşlı", "Ölü"], a: 1 },
+        { q: "Wakanda-da olan ən qiymətli metal?", o: ["Adamantium", "Vibranium", "Kriptonit", "Uru"], a: 1 },
+        { q: "Nick Fury-nin gözünə nə olub?", o: ["Qəza", "Flerken cızıb", "Loki vurub", "Anadangəlmə"], a: 1 },
+        { q: "Helanın güc mənbəyi?", o: ["Çəkic", "Asgard", "Məzarlıq", "Odin"], a: 1 },
+        { q: "Avengers ilk kimə qarşı birləşdi?", o: ["Thanos", "Loki", "Ultron", "Hela"], a: 1 },
+        { q: "Captain America neçə il buzda qaldı?", o: ["50", "66", "70", "100"], a: 2 },
+        { q: "Stan Lee-nin son rolu hansı filmdədir?", o: ["Endgame", "Captain Marvel", "Spider-Man", "Infinity War"], a: 0 },
+        { q: "TVA-dakı zaman saatının adı?", o: ["Miss Minutes", "Clocky", "Time Lady", "Watchy"], a: 0 },
+        { q: "Hawkeye-ın ən sevdiyi silah?", o: ["Tapança", "Ox-yay", "Qılınc", "Bıçaq"], a: 1 },
+        { q: "Iron Man-in dahi qızının adı?", o: ["Pepper", "Morgan", "Cassie", "Maria"], a: 1 },
+        { q: "Sam Wilson-un yeni adı?", o: ["Falcon", "Captain", "War Machine", "Patriot"], a: 1 },
+        { q: "Shang-Chi-nin neçə üzüyü var?", o: ["5", "10", "12", "8"], a: 1 },
+        { q: "Moon Knight-ın misir tanrısı?", o: ["Ra", "Khonshu", "Anubis", "Set"], a: 1 },
+        { q: "Spider-Man-in kimliyini kim açdı?", o: ["Mysterio", "Jameson", "Loki", "Iron Man"], a: 0 },
+        { q: "Vision-un alnındakı daş?", o: ["Zəka (Mind)", "Zaman", "Ruh", "Güc"], a: 0 },
+        { q: "Thanos-a xəyanət edən qızı?", o: ["Nebula", "Gamora", "Hela", "Sylvie"], a: 1 },
+        { q: "Loki-nin ən sevdiyi rəng?", o: ["Qırmızı", "Yaşıl", "Mavi", "Sarı"], a: 1 },
+        { q: "Eternals-ın ən sürətli üzvü?", o: ["Ikaris", "Makkari", "Thena", "Sersi"], a: 1 },
+        { q: "Captain Marvel gücünü hardan aldı?", o: ["Zaman", "Tesseract", "Ruh", "Zəka"], a: 1 },
+        { q: "Tony Stark-ın evinin adı?", o: ["Tower", "Stark Mansion", "Point Dume", "The Lab"], a: 2 },
+        { q: "MCU-nu yaradan əsas şəxs?", o: ["Stan Lee", "Kevin Feige", "Steve Ditko", "Hamısı"], a: 3 }
+    ];
+
+    let currentIdx = 0;
+    let score = 0;
+
+    function renderQuestion() {
+        if(currentIdx >= questions.length) { showFinal(); return; }
+        
+        const q = questions[currentIdx];
+        document.getElementById('question').innerText = `${currentIdx + 1}. ${q.q}`;
+        document.getElementById('q-counter').innerText = `T: ${currentIdx + 1}/30`;
+        document.getElementById('progress').style.width = `${(currentIdx/30)*100}%`;
+
+        const optsArea = document.getElementById('options');
+        optsArea.innerHTML = "";
+        q.o.forEach((opt, i) => {
+            const div = document.createElement('div');
+            div.className = "option-item";
+            div.innerText = opt;
+            div.onclick = () => { if(i === q.a) score++; currentIdx++; renderQuestion(); };
+            optsArea.appendChild(div);
+        });
+    }
+
+    function showFinal() {
+        document.getElementById('quiz-container').style.display = 'none';
+        document.getElementById('result-section').style.display = 'block';
+        document.getElementById('hidden-date').innerText = birthDate.split('-').reverse().join('.');
+        
+        const sc = Math.round((score/30)*100);
+        document.getElementById('final-score').innerText = `${sc}% SYNCED`;
+        
+        const char = document.getElementById('final-char');
+        const reason = document.getElementById('final-reason');
+
+        if(sc === 100) {
+            char.innerText = "HE WHO REMAINS";
+            reason.innerText = "Sən zamanın sonundasan! Heç bir səhv etmədən bütün Marvel kainatını bildin.";
+        } else if(sc >= 80) {
+            char.innerText = "GOD LOKI";
+            reason.innerText = "Möhtəşəm nəticə! Sən hekayələrin tanrısısan.";
+        } else if(sc >= 60) {
+            char.innerText = "SYLVIE";
+            reason.innerText = "Sən azadsan və döyüşçüsən. Sistemə qarşı duracaq qədər biliyin var.";
+        } else if(sc >= 40) {
+            char.innerText = "MOBIUS";
+            reason.innerText = "Yaxşı cəhddir! Amma hələ çoxlu kasetlər izləməlisən.";
+        } else {
+            char.innerText = "PRUNED";
+            reason.innerText = "Təəssüf ki, sən budandın! Boşluqda (Void) Alioth-dan qaçarkən filmləri yenidən izlə!";
+        }
+    }
+</script>
+</body>
+</html>
+
 
         /* --- ZORLA YATAY REJİM (CSS HACK) --- */
         /* Əgər ekran dikdirsə (Portrait), bütün saytı 90 dərəcə çeviririk */
