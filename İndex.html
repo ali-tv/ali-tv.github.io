@@ -1,439 +1,522 @@
 <!DOCTYPE html>
-<html lang="az">
+<html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>TVA | Agent Ayan Terminal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TVA Tempad - Vaka #2602 AYAN</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Bebas+Neue&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=VT323&family=Share+Tech+Mono&display=swap');
 
         :root {
-            --tva-orange: #ff8400;
-            --tva-dark-orange: #cc6a00;
-            --tva-loki-green: #00ff88;
-            --tva-alert-red: #ff3333;
-            --tva-bg: #0d0d0d;
-            --tva-grid: rgba(255, 132, 0, 0.1);
-            --tva-text: #ffb366;
-            --tempad-border: #2a2a2a;
-        }
-
-        * {
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
+            --tva-amber: #ffbf00;
+            --tva-orange: #ff8c00;
+            --tva-red: #ff3333;
+            --tva-dark: #120d00;
+            --screen-bg: #100c05;
         }
 
         body {
-            background-color: var(--tva-bg);
-            color: var(--tva-text);
-            font-family: 'Courier Prime', monospace;
-            margin: 0;
-            padding: 0;
-            background-image: 
-                linear-gradient(var(--tva-grid) 1px, transparent 1px),
-                linear-gradient(90deg, var(--tva-grid) 1px, transparent 1px);
-            background-size: 25px 25px;
-            overflow: hidden;
-            width: 100vw;
-            height: 100vh;
+            background-color: #1a1a1a;
+            font-family: 'VT323', monospace;
             display: flex;
             justify-content: center;
             align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+            user-select: none;
+            margin: 0;
         }
 
-        /* --- ZORLA YATAY REJİM --- */
-        @media screen and (orientation: portrait) {
-            #main-wrapper {
-                transform: translate(-50%, -50%) rotate(90deg);
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                width: 100vh;
-                height: 100vw;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-            }
-        }
-
-        @media screen and (orientation: landscape) {
-            #main-wrapper {
-                width: 100%;
-                height: 100%;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-            }
-        }
-
-        /* Scanline Effect */
-        body::before {
-            content: " ";
-            display: block;
-            position: absolute;
-            top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%);
-            z-index: 1000;
-            background-size: 100% 3px;
-            pointer-events: none;
-            opacity: 0.3;
-        }
-
-        /* --- TEMPAD LOGIN SCREEN --- */
-        #login-screen {
-            text-align: center;
-            padding: 25px;
-            border: 8px solid var(--tempad-border);
-            border-right: 12px solid #1a1a1a;
-            background: #121212;
+        /* --- KASA TASARIMI (Tempad Case) --- */
+        .tempad-case {
+            width: 360px;
+            height: 720px;
+            background: linear-gradient(145deg, #4a3b2a, #2c1e0a);
+            border-radius: 20px;
+            padding: 20px;
             box-shadow: 
-                inset 0 0 15px rgba(0,0,0,0.8),
-                0 0 40px rgba(0,0,0,1),
-                0 0 10px var(--tva-orange);
-            width: 85%;
-            max-width: 480px;
-            aspect-ratio: 16 / 10;
+                0 30px 60px rgba(0,0,0,0.8),
+                inset 0 0 15px rgba(0,0,0,0.5),
+                inset 2px 2px 5px rgba(255,255,255,0.1);
+            border: 4px solid #1f1505;
+            position: relative;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            border-radius: 12px;
+            gap: 15px;
+            transform: scale(0.95);
+        }
+
+        /* --- EKRAN (Screen) --- */
+        .screen-container {
+            width: 100%;
+            height: 420px;
+            background-color: var(--screen-bg);
+            border: 6px solid #000;
+            border-radius: 10px 10px 40px 10px;
             position: relative;
-            transition: 0.3s;
+            overflow: hidden;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.9);
+            transition: border-color 0.3s;
         }
 
-        .tva-logo {
-            font-family: 'Bebas Neue', cursive;
-            font-size: 3rem;
-            color: var(--tva-orange);
-            margin: 5px 0;
-            line-height: 1;
-            letter-spacing: 8px;
+        .screen-content {
+            padding: 15px;
+            color: var(--tva-amber);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            text-shadow: 0 0 4px var(--tva-amber);
+            position: relative;
+            z-index: 2;
+            overflow-y: auto;
+            scrollbar-width: none;
         }
+        .screen-content::-webkit-scrollbar { display: none; }
 
-        .custom-avatar {
-            height: 45%;
-            width: auto;
-            border-radius: 4px;
-            margin-bottom: 10px;
-            border: 1px solid rgba(0, 255, 136, 0.3);
-            box-shadow: 0 0 15px rgba(0, 255, 136, 0.2);
-            object-fit: contain;
-        }
-
-        .input-group {
-            width: 100%;
-            max-width: 250px;
-        }
-
-        input[type="date"] {
-            background: #000;
-            border: 1px solid var(--tva-orange);
-            color: var(--tva-orange);
-            padding: 8px;
-            font-family: 'Courier Prime', monospace;
-            font-size: 0.9rem;
-            margin-bottom: 10px;
-            width: 100%;
-            text-align: center;
-            outline: none;
-        }
-
-        .btn-tva {
-            background: var(--tva-orange);
-            color: #000;
-            border: none;
-            padding: 10px;
-            font-weight: bold;
-            font-family: 'Courier Prime', monospace;
-            text-transform: uppercase;
-            cursor: pointer;
-            width: 100%;
-            font-size: 0.9rem;
-            transition: 0.2s;
-            box-shadow: 0 4px 0 var(--tva-dark-orange);
-        }
-
-        .btn-tva:active {
-            transform: translateY(2px);
-            box-shadow: 0 2px 0 var(--tva-dark-orange);
-        }
-
-        /* --- ALERT SCREEN --- */
-        #alert-overlay {
+        /* CRT Efektleri */
+        .crt-overlay {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255, 0, 0, 0.9);
-            color: white;
-            display: none;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 500;
-            border-radius: 4px;
-            animation: blink-red 0.5s infinite alternate;
+            background: 
+                linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+                linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+            z-index: 10;
         }
 
-        @keyframes blink-red {
-            from { background: rgba(150, 0, 0, 0.9); }
-            to { background: rgba(255, 0, 0, 1); }
+        .scanline {
+            width: 100%;
+            height: 5px;
+            background: rgba(255, 191, 0, 0.1);
+            position: absolute;
+            z-index: 11;
+            animation: scan 3s linear infinite;
+            top: -10px;
+            pointer-events: none;
         }
 
-        /* --- TERMINAL CONTAINER --- */
-        .container {
-            width: 95%;
-            height: 90%;
-            border: 4px solid var(--tempad-border);
-            background: #0a0a0a;
-            padding: 20px;
-            display: none;
-            flex-direction: column;
-            border-radius: 10px;
+        @keyframes scan {
+            0% { top: -10px; }
+            100% { top: 100%; }
         }
 
-        .terminal-header {
-            border-bottom: 1px solid var(--tva-orange);
-            padding-bottom: 8px;
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.8rem;
-            color: var(--tva-orange);
-        }
-
-        .question-box {
-            font-size: 1.2rem;
-            margin-bottom: 20px;
-            min-height: 60px;
-        }
-
-        .options-list {
+        /* --- TUŞ TAKIMI (Keypad) --- */
+        .keypad {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            flex-grow: 1;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            padding: 10px;
+            background: #151005;
+            border-radius: 10px;
+            border: 2px solid #000;
         }
 
-        .option-item {
-            border: 1px solid #333;
-            padding: 15px;
+        .btn {
+            height: 40px;
+            background: linear-gradient(to bottom, #3d2e18, #261a0a);
+            border: 1px solid #5c4626;
+            border-radius: 4px;
+            box-shadow: 0 4px 0 #140d02;
             cursor: pointer;
             display: flex;
-            align-items: center;
             justify-content: center;
-            background: #111;
-            font-size: 0.9rem;
-            transition: 0.1s;
+            align-items: center;
+            color: rgba(255, 191, 0, 0.6);
+            font-size: 14px;
+            transition: all 0.1s;
         }
 
-        .option-item:active {
-            background: var(--tva-orange);
-            color: black;
-            border-color: var(--tva-orange);
+        .btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 0 0 #140d02;
+            color: var(--tva-amber);
         }
 
-        .progress-bar {
-            margin-top: 20px;
-            height: 4px;
-            background: #222;
+        .btn-main {
+            grid-column: span 2;
+            background: linear-gradient(to bottom, #5c4014, #3d2a0b);
+            color: var(--tva-amber);
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .btn-red {
+            background: linear-gradient(to bottom, #5c1414, #3d0b0b);
+            color: #ff9999;
+        }
+
+        /* --- MENÜ VE İÇERİK STİLLERİ --- */
+        .menu-item {
+            padding: 6px 10px;
+            margin: 2px 0;
+            border: 1px solid transparent;
+            font-size: 18px;
+        }
+        .menu-item.active {
+            background-color: rgba(255, 191, 0, 0.2);
+            border: 1px solid var(--tva-amber);
+            font-weight: bold;
+        }
+        .menu-item.active::before {
+            content: "> ";
+        }
+
+        /* --- ALARM & VARYANT MODU STİLLERİ --- */
+        .alarm-mode .screen-container {
+            border-color: var(--tva-red);
+            animation: borderPulse 0.5s infinite;
+        }
+        
+        .alarm-mode .screen-content {
+            color: var(--tva-red);
+            text-shadow: 0 0 5px var(--tva-red);
+        }
+
+        .alarm-text {
+            color: var(--tva-red);
+            animation: blink 0.5s infinite;
+            font-weight: bold;
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 10px;
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid var(--tva-red);
+        }
+
+        @keyframes borderPulse {
+            0% { border-color: var(--tva-red); box-shadow: inset 0 0 20px rgba(255,0,0,0.5); }
+            50% { border-color: #500; box-shadow: inset 0 0 5px rgba(255,0,0,0.2); }
+            100% { border-color: var(--tva-red); box-shadow: inset 0 0 20px rgba(255,0,0,0.5); }
+        }
+
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+        /* Varyant Kartı */
+        .variant-card {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            font-family: 'Share Tech Mono', monospace;
+        }
+        
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px dotted currentColor;
+            font-size: 14px;
+            padding-bottom: 2px;
+            margin-bottom: 5px;
+        }
+
+        /* --- MISS MINUTES --- */
+        #miss-minutes-container {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            width: 220px;
+            display: none;
+            animation: popUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 50;
+            text-align: right;
+        }
+
+        .mm-content-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .mm-bubble {
+            background: #fff;
+            color: #000;
+            padding: 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            font-family: sans-serif;
+            position: relative;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
             width: 100%;
         }
 
-        .progress-fill {
-            height: 100%;
-            background: var(--tva-orange);
-            width: 0%;
-            transition: 0.3s;
+        .mm-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            right: 20px;
+            border-width: 8px 8px 0;
+            border-style: solid;
+            border-color: #fff transparent;
         }
 
-        .result-title {
-            font-family: 'Bebas Neue', cursive;
-            font-size: 4rem;
-            color: #fff;
-            margin: 10px 0;
+        .mm-face {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%23ff9900'/%3E%3Ccircle cx='50' cy='50' r='35' fill='%23ffcc00'/%3E%3Ccircle cx='35' cy='40' r='5' fill='black'/%3E%3Ccircle cx='65' cy='40' r='5' fill='black'/%3E%3Cpath d='M30 65 Q50 80 70 65' stroke='black' stroke-width='3' fill='none'/%3E%3Crect x='48' y='10' width='4' height='10' rx='2' fill='black'/%3E%3Crect x='85' y='48' width='10' height='4' rx='2' fill='black'/%3E%3C/svg%3E");
+            border: 2px solid white;
+            margin-right: 10px;
+            animation: bounce 2s infinite;
         }
-        
+
+        .action-btn {
+            background: var(--tva-red);
+            color: white;
+            border: 2px solid #fff;
+            padding: 6px 12px;
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            margin-top: 5px;
+            margin-right: 10px;
+            border-radius: 4px;
+            animation: pulseBtn 1s infinite;
+        }
+
+        @keyframes popUp { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+        @keyframes pulseBtn { 0% { transform: scale(1); } 50% { transform: scale(1.05); box-shadow: 0 0 15px var(--tva-red); } 100% { transform: scale(1); } }
+
     </style>
 </head>
 <body>
 
-    <div id="main-wrapper">
-
-        <!-- GİRİŞ SƏHİFƏSİ -->
-        <div id="login-screen">
-            <!-- Alert Overlay -->
-            <div id="alert-overlay">
-                <h2 style="font-family:'Bebas Neue'; font-size: 3.5rem; margin:0;">VARIANT DETECTED</h2>
-                <h1 style="font-family:'Bebas Neue'; font-size: 5rem; margin:0; letter-spacing:10px;">AYAN</h1>
-                <p style="font-weight:bold;">SQUELCHING TIMELINE...</p>
-            </div>
-
-            <img src="https://raw.githubusercontent.com/ali-tv/ali-tv.github.io/main/IMG_20260131_135801_925.jpg" class="custom-avatar" alt="Loki Variant">
-            <h1 class="tva-logo">TVA</h1>
+    <div class="tempad-case">
+        <div class="absolute top-3 left-6 text-[#5c4626] text-xs font-bold tracking-widest opacity-50 uppercase">TVA Standard Issue</div>
+        
+        <div class="screen-container" id="screenContainer">
+            <div class="crt-overlay"></div>
+            <div class="scanline"></div>
+            <div class="screen-content" id="screen"></div>
             
-            <div class="input-group">
-                <p style="font-size: 0.6rem; margin: 5px 0; color: #888;">VERIFICATION REQUIRED</p>
-                <input type="date" id="birthdate">
-                <button class="btn-tva" onclick="accessTerminal()">CONNECT</button>
-            </div>
-            
-            <p id="access-msg" style="margin-top: 10px; font-size: 0.6rem; visibility: hidden; color: var(--tva-loki-green);">INITIALIZING SCAN...</p>
-        </div>
-
-        <!-- QUIZ CONTAINER -->
-        <div class="container" id="quiz-container">
-            <div class="terminal-header">
-                <span>SYS: AYAN_777</span>
-                <span id="q-counter">STEP: 1/30</span>
-            </div>
-            
-            <div class="question-box" id="question">Yüklənir...</div>
-            
-            <div class="options-list" id="options"></div>
-
-            <div class="progress-bar">
-                <div class="progress-fill" id="progress"></div>
+            <div id="miss-minutes-container">
+                <div class="mm-content-wrapper">
+                    <div class="mm-bubble">
+                        Hey Y'all! Kaçamazsın! <br>
+                        Ama Loki senin için özel bir hediye bıraktı. <br>
+                        Açmak için <span class="text-red-600 font-bold uppercase">SEÇ</span> tuşuna bas!
+                    </div>
+                    <button class="action-btn" onclick="goToSurprise()">🎁 HEDİYENİ AÇ >>></button>
+                    <div class="mm-face"></div>
+                </div>
             </div>
         </div>
 
-        <!-- FINAL RESULT -->
-        <div class="container" id="result-section" style="text-align:center;">
-            <p style="color: var(--tva-orange); font-size: 0.8rem;">SYNC COMPLETE</p>
-            <div id="final-char" class="result-title">LOKI</div>
-            <div style="font-size: 1.5rem; margin-bottom: 10px;" id="final-score">100%</div>
-            
-            <div style="font-size: 0.7rem; color: #888; margin-bottom: 10px;" id="ver-num">v00.REV.0000-AY</div>
-
-            <div style="border: 1px solid #333; padding: 15px; text-align: left; background: #000; font-size: 0.85rem; flex-grow: 1; overflow-y: auto;">
-                <p id="final-reason" style="line-height: 1.5;"></p>
+        <div class="flex justify-between items-center px-4">
+            <div class="text-[#ffbf00] text-xs opacity-70" id="mode-text">MODE: STANDARD</div>
+            <div class="w-12 h-2 bg-[#120d00] rounded-full border border-[#333] overflow-hidden">
+                <div id="battery" class="h-full bg-green-500 w-[88%]"></div>
             </div>
-            
-            <button class="btn-tva" style="margin-top:15px; width: auto; padding: 10px 40px;" onclick="location.reload()">REBOOT</button>
         </div>
 
+        <div class="keypad">
+            <div class="btn" onclick="navigate('up')">▲</div>
+            <div class="btn" onclick="navigate('down')">▼</div>
+            <div class="btn" onclick="navigate('left')">◀</div>
+            <div class="btn" onclick="navigate('right')">▶</div>
+            
+            <div class="btn btn-main" onclick="selectOption()">SEÇ</div>
+            <div class="btn btn-main btn-red" onclick="goHome()">ÇIKIŞ</div>
+
+            <div class="btn">1</div>
+            <div class="btn">2</div>
+            <div class="btn">3</div>
+            <div class="btn">4</div>
+            <div class="btn">5</div>
+            <div class="btn">6</div>
+            <div class="btn">7</div>
+            <div class="btn">8</div>
+        </div>
     </div>
 
-<script>
-    let birthDate = "";
-
-    function openFullscreen() {
-        const elem = document.documentElement;
-        if (elem.requestFullscreen) elem.requestFullscreen().catch(() => {});
-        else if (elem.webkitRequestFullscreen) elem.webkitRequestFullscreen();
-    }
-
-    function generateVersion(dateStr) {
-        // "2000-05-15" -> y: 2000, m: 05, d: 15
-        if(!dateStr) return "v1.0.0-PROTOTYPE";
-        const parts = dateStr.split('-');
-        const y = parts[0];
-        const m = parts[1];
-        const d = parts[2];
-        // Format: v2000.REV.1505-AY
-        return `v${y}.REV.${d}${m}-AY`;
-    }
-
-    function accessTerminal() {
-        const dateInput = document.getElementById('birthdate').value;
-        if(!dateInput) return;
+    <script>
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         
-        openFullscreen();
-        birthDate = dateInput;
-        
-        const alertOverlay = document.getElementById('alert-overlay');
-        alertOverlay.style.display = 'flex';
-        
-        setTimeout(() => {
-            document.getElementById('login-screen').style.display = 'none';
-            document.getElementById('quiz-container').style.display = 'flex';
-            renderQuestion();
-        }, 2500);
-    }
+        function playSound(type) {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            const now = audioCtx.currentTime;
 
-    const questions = [
-    { q: "Iron Man filmində Tony Stark-ı hansı terror qrupu qaçırır?", o: ["Hydra", "Ten Rings", "A.I.M.", "Hand"], a: 1 },
-    { q: "Captain America-nın ilk filmi hansı müharibə dövründə keçir?", o: ["I Dünya Müharibəsi", "II Dünya Müharibəsi", "Vyetnam Müharibəsi", "Soyuq Müharibə"], a: 1 },
-    { q: "Thor-un çəkici Mjölnir-i yalnız kim qaldıra bilər?", o: ["Layiq olan", "Asgardlı", "Tanrı", "Güclü olan"], a: 0 },
-    { q: "Hulk-un əsl adı nədir?", o: ["Bruce Banner", "Robert Bruce Banner", "David Banner", "Brian Banner"], a: 1 },
-    { q: "Black Widow-un əsl adı nədir?", o: ["Natalia Romanova", "Natasha Romanoff", "Yelena Belova", "Melina Vostokoff"], a: 1 },
-    { q: "Hawkeye-ın əsl adı nədir?", o: ["Clint Barton", "Ronin", "Kate Bishop", "Barney Barton"], a: 0 },
-    { q: "Guardians of the Galaxy-də Star-Lord-un anasının sevdiyi mahnı hansıdır?", o: ["Hooked on a Feeling", "Come and Get Your Love", "Cherry Bomb", "Fooled Around and Fell in Love"], a: 0 },
-    { q: "Spider-Man: Homecoming-də Vulture-ün əsl adı nədir?", o: ["Adrian Toomes", "Michael Keaton", "Mac Gargan", "Herman Schultz"], a: 0 },
-    { q: "Black Panther-in bacısı kimdir?", o: ["Shuri", "Nakia", "Okoye", "Ramonda"], a: 0 },
-    { q: "Doctor Strange-in mentoru kimdir?", o: ["Ancient One", "Wong", "Mordo", "Agatha"], a: 0 },
-    { q: "Captain Marvel-in gücü hardan gəlir?", o: ["Tesseract (Space Stone)", "Heart-Shaped Herb", "Super Soldier Serum", "Gamma Radiation"], a: 0 },
-    { q: "Ant-Man-in qızı kimdir?", o: ["Cassie Lang", "Hope van Dyne", "Janet van Dyne", "Maggie Lang"], a: 0 },
-    { q: "WandaVision-da Agatha Harkness-in əsl məqsədi nədir?", o: ["Wanda-nın gücünü oğurlamaq", "Vision-ı diriltmək", "Westview-i idarə etmək", "Monica-nı ovsunlamaq"], a: 0 },
-    { q: "Falcon and Winter Soldier-da yeni Captain America kim olur?", o: ["John Walker", "Sam Wilson", "Bucky Barnes", "Isaiah Bradley"], a: 0 },
-    { q: "Shang-Chi-də Ten Rings təşkilatının lideri əslində kimdir?", o: ["Wenwu (Mandarin)", "Xu Xialing", "Death Dealer", "Razor Fist"], a: 0 },
-    { q: "Eternals-da Deviant-ları kim yaradır?", o: ["Celestials", "Arishem", "Ikaris", "Kro"], a: 0 },
-    { q: "Spider-Man: No Way Home-da üç Spider-Man-dən biri Tobey Maguire-dir, digərləri?", o: ["Andrew Garfield və Tom Holland", "Andrew Garfield və Miles Morales", "Tobey Maguire və Miles Morales", "Zendaya və Kirsten Dunst"], a: 0 },
-    { q: "Moon Knight-ın xidmət etdiyi Misir tanrısı kimdir?", o: ["Khonshu", "Ammit", "Taweret", "Anubis"], a: 0 },
-    { q: "Thor: Love and Thunder-da Gorr-un silahı nədir?", o: ["Necrosword", "Stormbreaker", "Mjolnir", "Jane-in çəkici"], a: 0 },
-    { q: "Wakanda Forever-da yeni Black Panther kim olur?", o: ["Shuri", "Nakia", "M'Baku", "Okoye"], a: 0 },
-    { q: "She-Hulk serialında Jennifer Walters-in əmisi oğlu kimdir?", o: ["Bruce Banner", "Matt Murdock", "Emil Blonsky", "Wong"], a: 0 },
-    { q: "Guardians Vol.3-də High Evolutionary hansı personajı yaradır?", o: ["Rocket Raccoon", "Adam Warlock", "Groot", "Gamora"], a: 0 },
-    { q: "Ant-Man and the Wasp: Quantumania-da əsas villain kimdir?", o: ["Kang the Conqueror", "M.O.D.O.K.", "Darren Cross", "Ghost"], a: 0 },
-    { q: "Infinity War-da Thanos neçə Infinity Stone ilə snap edir?", o: ["Hamısı 6", "5", "4", "Tam gauntlet"], a: 0 },
-    { q: "Endgame-də zaman səyahəti üçün hansı aləmdən keçirlər?", o: ["Quantum Realm", "Mirror Dimension", "Dark Dimension", "Soul World"], a: 0 },
-    { q: "Avengers: Age of Ultron-da Vision-u kim yaradır?", o: ["Tony, Bruce və JARVIS", "Ultron", "Thanos", "Helen Cho"], a: 0 },
-    { q: "Civil War-da hansı hava limanında böyük döyüş olur?", o: ["Leipzig/Halle (Almaniya)", "New York", "Wakanda", "Sokovia"], a: 0 },
-    { q: "Deadpool & Wolverine filmində (2024) Deadpool hansı kainata düşür?", o: ["MCU (Earth-616)", "Fox X-Men", "Void", "TVA"], a: 0 },
-    { q: "Stan Lee-nin MCU-da ən son cameo-su hansı filmdədir?", o: ["Endgame", "Captain Marvel", "No Way Home", "Multiverse of Madness"], a: 0 },
-    { q: "MCU-nun ilk filmi hansıdır?", o: ["Iron Man (2008)", "The Incredible Hulk", "Captain America", "Thor"], a: 0 }
-];
-
-    let currentIdx = 0;
-    let score = 0;
-
-    function renderQuestion() {
-        if(currentIdx >= questions.length) { showFinal(); return; }
-        const q = questions[currentIdx];
-        document.getElementById('question').innerText = q.q;
-        document.getElementById('q-counter').innerText = `STEP: ${currentIdx + 1}/30`;
-        document.getElementById('progress').style.width = `${(currentIdx/30)*100}%`;
-
-        const optsArea = document.getElementById('options');
-        optsArea.innerHTML = "";
-        q.o.forEach((opt, i) => {
-            const div = document.createElement('div');
-            div.className = "option-item";
-            div.innerText = opt;
-            div.onclick = () => { if(i === q.a) score++; currentIdx++; renderQuestion(); };
-            optsArea.appendChild(div);
-        });
-    }
-
-    function showFinal() {
-        document.getElementById('quiz-container').style.display = 'none';
-        document.getElementById('result-section').style.display = 'flex';
-        
-        // Versiya nömrəsini gizli formada yazdır
-        document.getElementById('ver-num').innerText = generateVersion(birthDate);
-
-        const sc = Math.round((score/30)*100);
-        document.getElementById('final-score').innerText = `${sc}% SYNC`;
-        const char = document.getElementById('final-char');
-        const reason = document.getElementById('final-reason');
-
-        if(sc === 100) {
-            char.innerText = "HE WHO REMAINS";
-            reason.innerText = "Sən xronologiyanın sonundasan! Heç bir xəta etmədin. Sən artıq bir variant deyilsən, sən Zamanın Hökmdarısan.";
-        } else if(sc >= 80) {
-            char.innerText = "GOD LOKI";
-            reason.innerText = "Möhtəşəm! Hekayələrin tanrısı olaraq multikainatın ipləri sənin əlindədir.";
-        } else if(sc >= 60) {
-            char.innerText = "SYLVIE";
-            reason.innerText = "Döyüşçü və azad bir ruh. Bəzi xətaların olsa da, sistemə baş qaldıra bilərsən.";
-        } else if(sc >= 40) {
-            char.innerText = "MOBIUS";
-            reason.innerText = "TVA-nın sadiq agenti. Detalları bilirsən amma hələ çox kaset izləməlisən.";
-        } else {
-            char.innerText = "PRUNED";
-            reason.innerText = "Sən budandın! Boşluqda (Void) sağ qalmağa çalış və Marvel filmlərini təkrar izlə.";
+            if (type === 'nav') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(440, now);
+                gain.gain.setValueAtTime(0.05, now);
+                gain.gain.linearRampToValueAtTime(0, now + 0.05);
+                osc.start(now); osc.stop(now + 0.05);
+            } else if (type === 'enter') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(600, now);
+                gain.gain.setValueAtTime(0.1, now);
+                gain.gain.linearRampToValueAtTime(0, now + 0.2);
+                osc.start(now); osc.stop(now + 0.2);
+            } else if (type === 'alarm') {
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(800, now);
+                osc.frequency.linearRampToValueAtTime(600, now + 0.3);
+                gain.gain.setValueAtTime(0.05, now);
+                osc.start(now); osc.stop(now + 0.3);
+            }
         }
-    }
-</script>
+
+        let currentScreen = 'boot';
+        let menuIndex = 0;
+        let alarmInterval = null;
+        let missMinutesActive = false;
+        const screenEl = document.getElementById('screen');
+        const screenContainer = document.getElementById('screenContainer');
+        const modeText = document.getElementById('mode-text');
+        const missMinutesContainer = document.getElementById('miss-minutes-container');
+
+        const menuOptions = [
+            { id: 'timeline', label: 'ZAMAN ÇİZELGESİ' },
+            { id: 'database', label: 'VERİ TABANI' },
+            { id: 'door', label: 'ZAMAN KAPISI' },
+            { id: 'settings', label: 'AYARLAR' }
+        ];
+
+        window.onload = () => renderBoot();
+
+        function renderBoot() {
+            currentScreen = 'boot';
+            screenEl.innerHTML = `
+                <div class="flex flex-col items-center justify-center h-full">
+                    <svg class="w-12 h-12 mx-auto mb-2 animate-pulse" viewBox="0 0 100 100" fill="none" stroke="#ffbf00" stroke-width="4">
+                        <path d="M20 20 L50 80 L80 20 Z" />
+                        <path d="M15 20 L85 20" />
+                        <text x="50" y="45" text-anchor="middle" fill="#ffbf00" stroke="none" font-size="20" font-family="monospace" font-weight="bold">TVA</text>
+                    </svg>
+                    <div class="text-xl font-bold mt-2 tracking-widest">TEMPAD OS</div>
+                    <div class="mt-8 text-xs blink">SİSTEM BAŞLATILIYOR...</div>
+                    <div class="w-3/4 h-2 border border-[#ffbf00] mt-2 p-0.5 rounded">
+                        <div id="loader" class="h-full bg-[#ffbf00] w-0"></div>
+                    </div>
+                </div>
+            `;
+            let width = 0;
+            const interval = setInterval(() => {
+                width += 10;
+                if (document.getElementById('loader')) document.getElementById('loader').style.width = width + '%';
+                if (width >= 100) { clearInterval(interval); setTimeout(renderHome, 500); }
+            }, 100);
+        }
+
+        function renderHome() {
+            stopAlarm();
+            currentScreen = 'home';
+            menuIndex = 0;
+            updateMenuUI();
+        }
+
+        function updateMenuUI() {
+            if(currentScreen !== 'home') return;
+            const listHtml = menuOptions.map((opt, idx) => `
+                <div class="menu-item ${idx === menuIndex ? 'active' : ''}">${opt.label}</div>
+            `).join('');
+            screenEl.innerHTML = `
+                <div class="flex justify-between border-b border-[#ffbf00] pb-1 mb-2">
+                    <span class="text-xs">USER: ANALİST-2602</span>
+                    <span class="text-xs">Z-ÇİZGİSİ: 616</span>
+                </div>
+                <div class="text-center font-bold text-lg mb-4 text-[#ffbf00] bg-[#2c1e0a] border border-[#ffbf00]">ANA MENÜ</div>
+                <div class="flex flex-col gap-2 px-2">${listHtml}</div>
+            `;
+        }
+
+        function navigate(dir) {
+            if (currentScreen === 'home') {
+                playSound('nav');
+                if (dir === 'up') menuIndex = (menuIndex - 1 + menuOptions.length) % menuOptions.length;
+                else if (dir === 'down') menuIndex = (menuIndex + 1) % menuOptions.length;
+                updateMenuUI();
+            }
+        }
+
+        function selectOption() {
+            playSound('enter');
+            
+            // Eğer alarm ekranındaysak ve Miss Minutes aktifse "SEÇ" hediyeyi açar
+            if (currentScreen === 'alarm' && missMinutesActive) {
+                goToSurprise();
+                return;
+            }
+
+            if (currentScreen === 'home') {
+                const selected = menuOptions[menuIndex].id;
+                if (selected === 'database' || selected === 'timeline') triggerRedAlert();
+                else renderGenericPage(menuOptions[menuIndex].label, "ERİŞİM İZNİ GEREKLİ.");
+            }
+        }
+
+        function goHome() { playSound('nav'); stopAlarm(); renderHome(); }
+        
+        function goToSurprise() { 
+            // Rick Roll'a yönlendir
+            window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"; 
+        }
+
+        function renderGenericPage(title, msg) {
+            currentScreen = 'generic';
+            screenEl.innerHTML = `
+                <div class="border-b border-[#ffbf00] pb-1 mb-2 text-center font-bold">${title}</div>
+                <div class="flex items-center justify-center h-48 text-center text-sm">${msg}</div>
+                <div class="mt-auto text-xs text-center blink text-gray-500 uppercase">Geri dönmek için çıkışa basın</div>
+            `;
+        }
+
+        function triggerRedAlert() {
+            currentScreen = 'alarm';
+            missMinutesActive = false;
+            document.body.classList.add('alarm-mode');
+            screenContainer.classList.add('alarm-mode');
+            modeText.innerText = "MODE: CRITICAL FAILURE";
+            modeText.style.color = "red";
+            alarmInterval = setInterval(() => playSound('alarm'), 600);
+
+            screenEl.innerHTML = `
+                <div class="alarm-text">⚠️ VARYANT SAPTANDI ⚠️</div>
+                <div class="variant-card">
+                    <div class="relative w-32 h-40 mx-auto border-2 border-red-500 bg-black">
+                        <img src="https://raw.githubusercontent.com/ali-tv/ali-tv.github.io/9010b1c9309e091d65b13eab8df0ab473fe723fe/IMG_20260131_135801_925.jpg" class="w-full h-full object-cover opacity-80 grayscale contrast-125">
+                        <div class="absolute bottom-0 w-full bg-red-600 text-black text-center text-[10px] font-bold">VARYANT #2602</div>
+                    </div>
+                    
+                    <div class="text-sm space-y-2 mt-1">
+                        <div class="info-row"><span>DOSYA:</span> <span>AYAN-616</span></div>
+                        <div class="info-row"><span>DOĞUM:</span> <span>26.02.2008</span></div>
+                        <div class="border text-[11px] p-2 border-red-500 mt-2 bg-red-900 bg-opacity-20">
+                            <span class="text-red-400 font-bold uppercase">Suç:</span> "Reşit Olma Kanunu İhlali."<br><br>
+                            <span class="text-red-400 font-bold uppercase">Ceza:</span> "Sorumluluklar ve Vergiler ile dolu bir hayata sürgün."
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Miss Minutes 3 saniye sonra gelir ve Seç butonunu aktifleştirir
+            setTimeout(() => { 
+                missMinutesContainer.style.display = 'block'; 
+                missMinutesActive = true;
+                playSound('nav');
+            }, 3000);
+        }
+
+        function stopAlarm() {
+            document.body.classList.remove('alarm-mode');
+            screenContainer.classList.remove('alarm-mode');
+            modeText.innerText = "MODE: STANDARD";
+            modeText.style.color = "#ffbf00";
+            missMinutesContainer.style.display = 'none';
+            missMinutesActive = false;
+            if(alarmInterval) clearInterval(alarmInterval);
+        }
+    </script>
 </body>
 </html>
 
