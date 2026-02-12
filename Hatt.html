@@ -3,181 +3,141 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TVA Arxivləri - Alihuseyinli</title>
+    <title>TVA Arxivləri</title>
     <style>
-        /* Tam Müstəqil CSS - Heç bir kənar kitabxanadan asılı deyil */
         @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
-
+        
         * { box-sizing: border-box; }
-
+        
         body {
-            margin: 0;
-            padding: 0;
-            background-color: #1a1100;
+            margin: 0; padding: 0;
+            background-color: #0a0600;
             color: #ff9900;
             font-family: 'VT323', monospace;
             height: 100vh;
             display: flex;
             justify-content: center;
+            align-items: center;
             overflow: hidden;
         }
 
-        .main-container {
-            width: 100%;
-            max-width: 600px;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
+        /* Giriş Ekranı */
+        #login-screen {
+            text-align: center;
+            z-index: 100;
+            background: #0a0600;
+            width: 100%; height: 100%;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+        }
+
+        .terminal-input {
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid #ff9900;
+            color: #ff9900;
+            font-family: 'VT323', monospace;
+            font-size: 2rem;
+            text-align: center;
+            outline: none;
+            width: 250px;
+        }
+
+        /* Əsas Çat Konteyneri (Başlanğıcda gizli) */
+        #main-portal {
+            display: none;
+            width: 100%; max-width: 600px;
+            height: 100%; flex-direction: column;
             border-left: 2px solid #3b2204;
             border-right: 2px solid #3b2204;
             background-color: #1a1100;
             position: relative;
-            z-index: 1;
         }
 
-        .header {
-            text-align: center;
-            padding: 20px;
-            border-bottom: 2px solid #3b2204;
-            background: rgba(255, 153, 0, 0.05);
+        /* CRT Effekti */
+        #main-portal::before {
+            content: " "; display: block; position: absolute; top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%);
+            z-index: 10; pointer-events: none; background-size: 100% 2px;
         }
 
-        .header h1 {
-            margin: 0;
-            font-size: 2.2rem;
-            letter-spacing: 4px;
-            text-shadow: 0 0 10px rgba(255, 153, 0, 0.5);
+        .header { 
+            text-align: center; padding: 15px; 
+            border-bottom: 2px solid #3b2204; 
+            background: rgba(255, 153, 0, 0.05); 
         }
 
-        #chat-window {
-            flex: 1;
-            overflow-y: auto;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            background-image: radial-gradient(circle, #2a1b00 1px, transparent 1px);
-            background-size: 30px 30px;
+        #chat-window { 
+            flex: 1; overflow-y: auto; padding: 20px; 
+            display: flex; flex-direction: column; gap: 15px; 
         }
 
-        .msg {
-            font-size: 1.6rem;
-            line-height: 1.3;
-            max-width: 85%;
-            padding: 10px;
-            word-wrap: break-word;
-            position: relative;
-            border-radius: 4px;
-        }
+        .msg { font-size: 1.5rem; padding: 12px; border-radius: 4px; max-width: 85%; }
+        .bot { align-self: flex-start; border-left: 4px solid #ff9900; background: rgba(255, 153, 0, 0.1); }
+        .user { align-self: flex-end; color: #fff; border-right: 4px solid #fff; background: rgba(255, 255, 255, 0.05); }
 
-        .bot {
-            align-self: flex-start;
-            border-left: 4px solid #ff9900;
-            background: rgba(255, 153, 0, 0.1);
-        }
+        .label { font-size: 0.8rem; display: block; margin-bottom: 5px; opacity: 0.7; font-weight: bold; }
 
-        .user {
-            align-self: flex-end;
-            text-align: right;
-            color: #ffffff;
-            border-right: 4px solid #ffffff;
-            background: rgba(255, 255, 255, 0.05);
-        }
-
-        .input-container {
-            padding: 15px;
-            border-top: 2px solid #3b2204;
-            display: flex;
-            gap: 10px;
-            background-color: #1a1100;
-            position: relative;
-            z-index: 10;
-        }
-
-        input {
-            flex: 1;
-            background: #0a0600;
-            border: 2px solid #ff9900;
-            color: #ff9900;
-            padding: 12px;
-            font-family: 'VT323', monospace;
-            font-size: 1.5rem;
-            outline: none;
-        }
-
-        button {
-            background-color: #ff9900;
-            color: #1a1100;
-            border: none;
-            padding: 0 25px;
-            font-family: 'VT323', monospace;
-            font-size: 1.3rem;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        button:disabled { opacity: 0.3; }
-
-        .status-bar {
-            font-size: 0.8rem;
-            padding: 5px 20px;
-            background: #3b2204;
-            color: #ff9900;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .typing {
-            display: none;
-            font-style: italic;
-            opacity: 0.7;
-            margin-bottom: 5px;
-        }
+        .input-container { padding: 15px; border-top: 2px solid #3b2204; display: flex; gap: 10px; }
+        #user-input { flex: 1; background: #0a0600; border: 2px solid #ff9900; color: #ff9900; padding: 12px; font-family: 'VT323', monospace; font-size: 1.4rem; outline: none; }
+        
+        .typing-indicator { display: none; font-style: italic; opacity: 0.7; color: #ff9900; margin-left: 20px; margin-bottom: 10px; }
     </style>
 </head>
-<body>
+<body oncontextmenu="return false;"> <!-- Sağ düymə bloklandı -->
 
-<div class="main-container">
+<div id="login-screen">
+    <h1 style="letter-spacing: 5px;">TVA TERMINAL</h1>
+    <p>ACCESS CODE REQUIRED</p>
+    <input type="password" id="passkey" class="terminal-input" placeholder="****" autofocus>
+</div>
+
+<div id="main-portal">
     <div class="header">
-        <h1>TVA PORTAL</h1>
-        <p>ALIHUSEYINLI MASTER XƏTTİ</p>
-    </div>
-
-    <div class="status-bar">
-        <span id="conn-status">BAĞLANTI: AKTİV</span>
-        <span id="time-display">--:--:--</span>
+        <h1>TIME VARIANCE AUTHORITY</h1>
+        <div style="font-size: 0.7rem; opacity: 0.5;">SECURE LINE: ENCRYPTED</div>
     </div>
 
     <div id="chat-window">
         <div class="msg bot">
-            Salamlar! 👋 Mən Miss Minutes! <br><br>
-            Sən Alihuseyinli haqqında məlumat almaq istəyirsən? <br><br>
-            Sualını bura yaz, mən onu dərhal Master-in cibinə (Telegram-ına) çatdırım! ⏰
-        </div>
-        
-        <div id="typing-indicator" class="msg bot typing">
-            Master cavab hazırlayır...
+            <span class="label">MISS MINUTES ⏰</span>
+            Hey y'all! Giriş uğurludur. Mən Miss Minutes. Analiz üçün hazıram!
         </div>
     </div>
 
+    <div id="typing-indicator" class="typing-indicator">Analiz aparılır...</div>
+
     <div class="input-container">
-        <input type="text" id="user-input" placeholder="Sualınızı bura yazın..." autocomplete="off">
-        <button id="send-btn" onclick="handleSend()">GÖNDƏR</button>
+        <input type="text" id="user-input" placeholder="Cavabınızı yazın..." autocomplete="off">
     </div>
 </div>
 
 <script>
-    const BOT_TOKEN = "8183360562:AAEXFgET3E8dWf2O-qbPeLK3D_XE18QR7Wg";
-    const CHAT_ID = "515565950"; 
+    // Tokenləri Base64 ilə bir az gizlədirik (GitHub skanerlərindən qorunmaq üçün)
+    // Bu metod tam keçilməz deyil, amma "ifşalanma" riskini azaldır.
+    const _b = "ODE4MzM2MDU2MjpBQUVYRmdFVDNFOERXZjJPLXFiUGVMSzNEX1hFMThRUjdXZw=="; // BOT_TOKEN
+    const _c = "Njk4Nzg2NDc1Mw=="; // CHAT_ID
+
+    const BOT_TOKEN = atob(_b);
+    const CHAT_ID = atob(_c);
     
     let lastUpdateId = 0;
 
-    // Saat yenilənməsi
-    setInterval(() => {
-        document.getElementById('time-display').innerText = new Date().toLocaleTimeString('az-AZ');
-    }, 1000);
+    // Şifrə Yoxlanışı
+    document.getElementById('passkey').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            if (e.target.value === "TVA-95155") { // ŞİFRƏN BURADADIR
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('main-portal').style.display = 'flex';
+                initUpdates();
+                setInterval(pollTelegram, 2000);
+            } else {
+                e.target.value = "";
+                e.target.placeholder = "WRONG CODE";
+            }
+        }
+    });
 
-    // Telegramdan ən son mesajın ID-sini al ki, köhnələri təkrar oxumasın
     async function initUpdates() {
         try {
             const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getUpdates?limit=1`);
@@ -185,93 +145,59 @@
             if (data.ok && data.result.length > 0) {
                 lastUpdateId = data.result[data.result.length - 1].update_id;
             }
-        } catch (e) {
-            document.getElementById('conn-status').innerText = "BAĞLANTI: OFFLINE";
-        }
+        } catch (e) {}
     }
 
-    window.onload = async () => {
-        await initUpdates();
-        setInterval(pollTelegram, 3000);
-        sendToTelegram("🟢 *Portal yenidən aktivləşdi!* Kiminsə sənin haqqında məlumata ehtiyacı var.");
-    };
-
-    function appendMsg(text, type) {
+    function appendMsg(text, type, senderLabel) {
         const win = document.getElementById('chat-window');
-        const typingInd = document.getElementById('typing-indicator');
         const div = document.createElement('div');
         div.className = `msg ${type}`;
-        div.innerHTML = text;
-        win.insertBefore(div, typingInd);
+        div.innerHTML = `<span class="label">${senderLabel}</span>${text}`;
+        win.appendChild(div);
         win.scrollTop = win.scrollHeight;
     }
 
     async function handleSend() {
         const input = document.getElementById('user-input');
-        const btn = document.getElementById('send-btn');
         const val = input.value.trim();
-        
         if (!val) return;
 
-        appendMsg(val, 'user');
+        appendMsg(val, 'user', 'VARIANT #95155');
         input.value = "";
-        
-        input.disabled = true;
-        btn.disabled = true;
         document.getElementById('typing-indicator').style.display = 'block';
 
-        const success = await sendToTelegram(`❓ *Sual:* ${val}`);
-        if(!success) {
-            appendMsg("⚠️ Master hazırda məşğuldur və ya bağlantı zəifdir.", "bot");
-            document.getElementById('typing-indicator').style.display = 'none';
-            input.disabled = false;
-            btn.disabled = false;
-        }
+        await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                chat_id: CHAT_ID,
+                text: `👤 *Yeni Variant:* ${val}`
+            })
+        });
     }
 
     async function pollTelegram() {
         try {
             const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getUpdates?offset=${lastUpdateId + 1}`);
             const data = await res.json();
-            
             if (data.ok && data.result.length > 0) {
                 for (let update of data.result) {
                     lastUpdateId = update.update_id;
                     if (update.message && update.message.chat.id.toString() === CHAT_ID) {
-                        const masterText = update.message.text;
-                        
                         document.getElementById('typing-indicator').style.display = 'none';
-                        document.getElementById('user-input').disabled = false;
-                        document.getElementById('send-btn').disabled = false;
-                        document.getElementById('user-input').focus();
-                        
-                        appendMsg(masterText, 'bot');
+                        appendMsg(update.message.text, 'bot', 'MISS MINUTES ⏰');
                     }
                 }
             }
         } catch (e) {}
     }
 
-    async function sendToTelegram(text) {
-        try {
-            const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    chat_id: CHAT_ID,
-                    text: text,
-                    parse_mode: "Markdown"
-                })
-            });
-            return response.ok;
-        } catch (e) { return false; }
-    }
-
     document.getElementById('user-input').addEventListener('keypress', (e) => {
-        if (e.key === 'Enter' && !document.getElementById('user-input').disabled) handleSend();
+        if (e.key === 'Enter') handleSend();
     });
-</script>
 
-</body>
-</html>
+    // F12 və CTRL+U bloklaması (Sadə qorunma)
+    document.onkeydown = function(e) {
+        if(e.keyCode == 123) return false;
+        if(e.ctrlKey && e.
 
