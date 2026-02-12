@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TVA Arxivləri - Alihuseyinli</title>
     <style>
-        /* Tamamilə müstəqil CSS - Heç bir xarici asılılıq yoxdur */
+        /* Tam Müstəqil CSS - Heç bir kənar kitabxanadan asılı deyil */
         @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
 
         * { box-sizing: border-box; }
@@ -32,6 +32,7 @@
             border-right: 2px solid #3b2204;
             background-color: #1a1100;
             position: relative;
+            z-index: 1;
         }
 
         .header {
@@ -46,12 +47,6 @@
             font-size: 2.2rem;
             letter-spacing: 4px;
             text-shadow: 0 0 10px rgba(255, 153, 0, 0.5);
-        }
-
-        .header p {
-            margin: 5px 0 0;
-            font-size: 0.9rem;
-            opacity: 0.6;
         }
 
         #chat-window {
@@ -72,6 +67,7 @@
             padding: 10px;
             word-wrap: break-word;
             position: relative;
+            border-radius: 4px;
         }
 
         .bot {
@@ -94,7 +90,8 @@
             display: flex;
             gap: 10px;
             background-color: #1a1100;
-            z-index: 100;
+            position: relative;
+            z-index: 10;
         }
 
         input {
@@ -117,11 +114,9 @@
             font-size: 1.3rem;
             font-weight: bold;
             cursor: pointer;
-            transition: transform 0.1s;
         }
 
-        button:active { transform: scale(0.95); }
-        button:disabled { opacity: 0.3; cursor: not-allowed; }
+        button:disabled { opacity: 0.3; }
 
         .status-bar {
             font-size: 0.8rem;
@@ -137,13 +132,7 @@
             font-style: italic;
             opacity: 0.7;
             margin-bottom: 5px;
-            color: #ff9900;
         }
-
-        /* Scrollbar */
-        #chat-window::-webkit-scrollbar { width: 6px; }
-        #chat-window::-webkit-scrollbar-track { background: #1a1100; }
-        #chat-window::-webkit-scrollbar-thumb { background: #ff9900; }
     </style>
 </head>
 <body>
@@ -151,19 +140,19 @@
 <div class="main-container">
     <div class="header">
         <h1>TVA PORTAL</h1>
-        <p>ALIHUSEYINLI PRIVATE ARCHIVE</p>
+        <p>ALIHUSEYINLI MASTER XƏTTİ</p>
     </div>
 
     <div class="status-bar">
         <span id="conn-status">BAĞLANTI: AKTİV</span>
-        <span id="time-display">00:00:00</span>
+        <span id="time-display">--:--:--</span>
     </div>
 
     <div id="chat-window">
         <div class="msg bot">
-            Hey y'all! 👋 Mən Miss Minutes! <br><br>
-            Sən Alihuseyinli-nin şəxsi portalına daxil olmusan. <br><br>
-            Nə öyrənmək istərdin? Sualını yaz, dərhal Master-ə ötürüm! ⏰
+            Salamlar! 👋 Mən Miss Minutes! <br><br>
+            Sən Alihuseyinli haqqında məlumat almaq istəyirsən? <br><br>
+            Sualını bura yaz, mən onu dərhal Master-in cibinə (Telegram-ına) çatdırım! ⏰
         </div>
         
         <div id="typing-indicator" class="msg bot typing">
@@ -172,7 +161,7 @@
     </div>
 
     <div class="input-container">
-        <input type="text" id="user-input" placeholder="Mesajınızı bura yazın..." autocomplete="off">
+        <input type="text" id="user-input" placeholder="Sualınızı bura yazın..." autocomplete="off">
         <button id="send-btn" onclick="handleSend()">GÖNDƏR</button>
     </div>
 </div>
@@ -183,12 +172,12 @@
     
     let lastUpdateId = 0;
 
-    // Saat ekranı
+    // Saat yenilənməsi
     setInterval(() => {
-        const now = new Date();
-        document.getElementById('time-display').innerText = now.toLocaleTimeString('az-AZ');
+        document.getElementById('time-display').innerText = new Date().toLocaleTimeString('az-AZ');
     }, 1000);
 
+    // Telegramdan ən son mesajın ID-sini al ki, köhnələri təkrar oxumasın
     async function initUpdates() {
         try {
             const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getUpdates?limit=1`);
@@ -196,15 +185,15 @@
             if (data.ok && data.result.length > 0) {
                 lastUpdateId = data.result[data.result.length - 1].update_id;
             }
-        } catch (e) { 
+        } catch (e) {
             document.getElementById('conn-status').innerText = "BAĞLANTI: OFFLINE";
         }
     }
 
     window.onload = async () => {
         await initUpdates();
-        sendToTelegram("🟢 *Portal açıldı!* Ziyarətçi hazırda saytdadır.");
         setInterval(pollTelegram, 3000);
+        sendToTelegram("🟢 *Portal yenidən aktivləşdi!* Kiminsə sənin haqqında məlumata ehtiyacı var.");
     };
 
     function appendMsg(text, type) {
@@ -233,7 +222,7 @@
 
         const success = await sendToTelegram(`❓ *Sual:* ${val}`);
         if(!success) {
-            appendMsg("⚠️ Texniki xəta: Master ilə əlaqə kəsildi. Yenidən yoxlayın.", "bot");
+            appendMsg("⚠️ Master hazırda məşğuldur və ya bağlantı zəifdir.", "bot");
             document.getElementById('typing-indicator').style.display = 'none';
             input.disabled = false;
             btn.disabled = false;
@@ -275,9 +264,7 @@
                 })
             });
             return response.ok;
-        } catch (e) { 
-            return false; 
-        }
+        } catch (e) { return false; }
     }
 
     document.getElementById('user-input').addEventListener('keypress', (e) => {
