@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TVA Arxivləri - Alihuseyinli Portalı</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+        :root { --tva-orange: #ff9900; --tva-bg: #1a1100; }
+        body { background-color: var(--tva-bg); color: var(--tva-orange); font-family: 'VT323', monospace; height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
+        .crt::after {
+            content: " "; display: block; position: absolute; top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
+            z-index: 10; pointer-events: none; background-size: 100% 2px, 3px 100%;
+        }
+        #chat-window { flex: 1; overflow-y: auto; padding: 20px; scroll-behavior: smooth; position: relative; z-index: 1; }
+        .msg { margin-bottom: 20px; font-size: 1.5rem; line-height: 1.2; }
+        .bot { border-left: 4px solid var(--tva-orange); padding-left: 15px; }
+        .user { color: #fff; text-align: right; border-right: 4px solid #fff; padding-right: 15px; }
+        .input-area { padding: 20px; border-top: 2px solid #3b2204; display: flex; gap: 10px; background: #1a1100; position: relative; z-index: 2; transition: all 0.3s; }
+        .input-area.disabled { opacity: 0.5; pointer-events: none; filter: grayscale(1); }
+        input { flex: 1; background: transparent; border: 2px solid var(--tva-orange); color: var(--tva-orange); padding: 12px; font-family: 'VT323', monospace; font-size: 1.5rem; outline: none; }
+        button { background: var(--tva-orange); color: #1a1100; padding: 0 25px; font-weight: bold; cursor: pointer; border: none; }
+        
+        .typing { display: none; font-style: italic; opacity: 0.7; margin-top: 10px; }
+        .dot { animation: blink 1.4s infinite both; }
+        .dot:nth-child(2) { animation-delay: 0.2s; }
+        .dot:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes blink { 0% { opacity: .2; } 20% { opacity: 1; } 100% { opacity: .2; } }
+    </style>
+</head>
+<body class="crt">
+    <div class="max-w-2xl mx-auto w-full h-full flex flex-col border-x border-orange-900/20">
+        <div class="text-center py-4 border-b border-orange-900/20 bg-orange-900/5">
+            <h1 class="text-3xl tracking-widest uppercase">Məlumat Portalı</h1>
+            <p class="text-[10px] opacity-40">MASTER: ALIHUSEYINLI // CANLI ƏLAQƏ XƏTTİ</p>
+        </div>
+
+        <div id="chat-window">
+            <div class="msg bot" id="welcome-msg">
+                Hey y'all! 👋 Mən Miss Minutes! <br><br>
+                Sən Alihuseyinli haqqında məlumat almaq üçün doğru yerə gəlmisən. Arxivlərimiz hər kəsə açıqdır! <br><br>
+                Nə öyrənmək istərdin? İstənilən sualı verə bilərsən, mən dərhal sənə cavab tapacam! ⏰
+            </div>
+            
+            <div id="typing-indicator" class="msg bot typing">
+                Miss Minutes Master ilə əlaqə saxlayır<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span>
+            </div>
+        </div>
+
+        <div class="input-area" id="input-container">
+            <input type="text" id="user-input" placeholder="Sualınızı bura yazın..." autocomplete="off">
+            <button id="send-btn" onclick="handleSend()">SORUŞ</button>
+        </div>
+    </div>
+
+    <script>
+        const BOT_TOKEN = "8183360562:AAEXFgET3E8dWf2O-qbPeLK3D_XE18QR7Wg";
+        const CHAT_ID = "515565950"; // Sənin Telegram ID-n
+        
+        let lastUpdateId = 0;
+
+        window.onload = async () => {
+            try {
+                // Get initial update ID to skip old messages
+                const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getUpdates`);
+                const data = await res.json();
+                if (data.result.length > 0) {
+                    lastUpdateId = data.result[data.result.length - 1].update_id;
+                }
+                
+                await sendToTelegram("🔔 *YENİ ZİYARƏTÇİ!* \nBiri portalına daxil oldu və sualını gözləyir.");
+                setInterval(pollTelegram, 2000);
+            } catch (e) { console.error("Sistem xətası"); }
+        };
+
+        function appendMsg(text, type) {
+            const win = document.getElementById('chat-window');
+            const typingInd = document.getElementById('typing-indicator');
+            const div = document.createElement('div');
+            div.className = `msg ${type}`;
+            div.innerHTML = text;
+            win.insertBefore(div, typingInd);
+            win.scrollTop = win.scrollHeight;
+        }
+
+        function showTyping() {
+            document.getElementById('typing-indicator').style.display = 'block';
+            document.getElementById('chat-window').scrollTop = document.getElementById('chat-window').scrollHeight;
+            document.getElementById('input-container').classList.add('disabled');
+            document.getElementById('user-input').disabled = true;
+        }
+
+        function hideTyping() {
+            document.getElementById('typing-indicator').style.display = 'none';
+            document.getElementById('input-container').classList.remove('disabled');
+            document.getElementById('user-input').disabled = false;
+            document.getElementById('user-input').focus();
+        }
+
+        async function handleSend() {
+            const input = document.getElementById('user-input');
+            const val = input.value.trim();
+            if (!val) return;
+
+            appendMsg(val, 'user');
+            input.value = "";
+            showTyping();
+
+            // Sualı sənə göndəririk
+            await sendToTelegram(`❓ *YENİ SUAL GƏLDİ:* \n"${val}" \n\n_Cavabınızı bura yazın..._`);
+        }
+
+        async function pollTelegram() {
+            try {
+                const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getUpdates?offset=${lastUpdateId + 1}`);
+                const data = await res.json();
+                
+                if (data.ok && data.result.length > 0) {
+                    for (let update of data.result) {
+                        lastUpdateId = update.update_id;
+                        if (update.message && update.message.chat.id.toString() === CHAT_ID) {
+                            const masterText = update.message.text;
+                            hideTyping();
+                            appendMsg(masterText, 'bot');
+                        }
+                    }
+                }
+            } catch (e) {}
+        }
+
+        async function sendToTelegram(text) {
+            await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    chat_id: CHAT_ID,
+                    text: text,
+                    parse_mode: "Markdown"
+                })
+            });
+        }
+
+        document.getElementById('user-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !document.getElementById('user-input').disabled) handleSend();
+        });
+    </script>
+</body>
+</html>
+
+
