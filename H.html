@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TVA Access Portal</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+        
+        * { box-sizing: border-box; }
+        
+        body {
+            margin: 0; padding: 0;
+            background-color: #0a0600;
+            color: #ff9900;
+            font-family: 'VT323', monospace;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        /* Giriş ve İsim Ekranı */
+        #auth-overlay {
+            position: fixed;
+            inset: 0;
+            background: #0a0600;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .term-input {
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid #ff9900;
+            color: #ff9900;
+            font-family: 'VT323', monospace;
+            font-size: 2rem;
+            text-align: center;
+            outline: none;
+            width: 280px;
+        }
+
+        /* Ana Panel */
+        .main-container {
+            display: none;
+            width: 100%; max-width: 600px;
+            height: 100%; flex-direction: column;
+            border-left: 2px solid #3b2204;
+            border-right: 2px solid #3b2204;
+            background-color: #1a1100;
+        }
+
+        .header { 
+            text-align: center; 
+            padding: 15px; 
+            border-bottom: 2px solid #3b2204; 
+            background: rgba(255, 153, 0, 0.05); 
+        }
+
+        .header h1 { margin: 0; font-size: 2rem; letter-spacing: 3px; text-shadow: 0 0 10px #ff9900; }
+
+        #chat-window { 
+            flex: 1; 
+            overflow-y: auto; 
+            padding: 20px; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 15px; 
+        }
+
+        .msg { 
+            font-size: 1.5rem; 
+            line-height: 1.3; 
+            max-width: 85%; 
+            padding: 12px; 
+            border-radius: 4px;
+            word-wrap: break-word;
+        }
+
+        .bot { 
+            align-self: flex-start; 
+            border-left: 4px solid #ff9900; 
+            background: rgba(255, 153, 0, 0.1); 
+        }
+
+        .user { 
+            align-self: flex-end; 
+            text-align: right; 
+            color: #ffffff; 
+            border-right: 4px solid #ffffff; 
+            background: rgba(255, 255, 255, 0.05); 
+        }
+
+        .label {
+            font-size: 0.8rem;
+            display: block;
+            margin-bottom: 5px;
+            opacity: 0.6;
+            letter-spacing: 1px;
+        }
+
+        .input-container { 
+            padding: 15px; 
+            border-top: 2px solid #3b2204; 
+            display: flex; 
+            gap: 10px; 
+        }
+
+        #user-input { 
+            flex: 1; 
+            background: #0a0600; 
+            border: 2px solid #ff9900; 
+            color: #ff9900; 
+            padding: 12px; 
+            font-family: 'VT323', monospace; 
+            font-size: 1.4rem; 
+            outline: none; 
+        }
+
+        /* Animasyon */
+        .typing { display: none; font-size: 1.2rem; margin-left: 20px; opacity: 0.7; }
+
+        #chat-window::-webkit-scrollbar { width: 5px; }
+        #chat-window::-webkit-scrollbar-thumb { background: #3b2204; }
+    </style>
+</head>
+<body>
+
+<!-- Giriş Katmanı -->
+<div id="auth-overlay">
+    <div id="step-1">
+        <h2 style="letter-spacing: 5px;">ACCESS CODE</h2>
+        <input type="password" id="pass-code" class="term-input" placeholder="****" maxlength="4">
+    </div>
+    <div id="step-2" style="display: none;">
+        <h2 style="letter-spacing: 5px;">IDENTIFY YOURSELF</h2>
+        <input type="text" id="user-name" class="term-input" placeholder="İSİM GİRİN" maxlength="15">
+    </div>
+</div>
+
+<!-- Ana Panel -->
+<div class="main-container" id="main-ui">
+    <div class="header">
+        <h1>TVA TERMINAL</h1>
+        <div style="font-size: 0.7rem; opacity: 0.5;">PROTOKOL: MISS MINUTES v4.0</div>
+    </div>
+
+    <div id="chat-window">
+        <!-- Başlangıç mesajı -->
+    </div>
+
+    <div id="typing" class="typing">Miss Minutes verileri işliyor...</div>
+
+    <div class="input-container">
+        <input type="text" id="user-input" placeholder="Veri girişi yapın..." autocomplete="off">
+    </div>
+</div>
+
+<script>
+    const BOT_TOKEN = "8183360562:AAEXFgET3E8dWf2O-qbPeLK3D_XE18QR7Wg";
+    const CHAT_ID = "6987864753"; 
+    const MASTER_PASS = "1995"; // Şifreyi buradan değiştirebilirsin
+    
+    let lastId = 0;
+    let userName = "VARYANT";
+
+    // Giriş Mantığı
+    const passInp = document.getElementById('pass-code');
+    const nameInp = document.getElementById('user-name');
+
+    passInp.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter' && passInp.value === MASTER_PASS) {
+            document.getElementById('step-1').style.display = 'none';
+            document.getElementById('step-2').style.display = 'block';
+            nameInp.focus();
+        }
+    });
+
+    nameInp.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter' && nameInp.value.trim() !== "") {
+            userName = nameInp.value.trim().toUpperCase();
+            initApp();
+        }
+    });
+
+    async function initApp() {
+        document.getElementById('auth-overlay').style.display = 'none';
+        document.getElementById('main-ui').style.display = 'flex';
+        
+        appendMsg(`Hey y'all! Merhaba ${userName}! Ben Miss Minutes. Zaman xəttindəki fəaliyyətini izləmək üçün buradayam. Nə bilmək istəyirsən?`, 'bot', 'MISS MINUTES ⏰');
+        
+        // Telegram'a yeni birinin girdiğini haber ver
+        notifyMaster(`🔔 YENİ BAĞLANTI\nİsim: ${userName}`);
+        
+        // Polling başlat
+        const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getUpdates?offset=-1`);
+        const data = await res.json();
+        if(data.ok && data.result.length > 0) lastId = data.result[0].update_id;
+        setInterval(poll, 2000);
+    }
+
+    function appendMsg(text, type, label) {
+        const win = document.getElementById('chat-window');
+        const div = document.createElement('div');
+        div.className = `msg ${type}`;
+        div.innerHTML = `<span class="label">${label}</span>${text}`;
+        win.appendChild(div);
+        win.scrollTop = win.scrollHeight;
+    }
+
+    async function handleSend() {
+        const input = document.getElementById('user-input');
+        const val = input.value.trim();
+        if (!val) return;
+
+        appendMsg(val, 'user', userName);
+        input.value = "";
+        document.getElementById('typing').style.display = 'block';
+
+        notifyMaster(`👤 [${userName}]: ${val}`);
+    }
+
+    async function notifyMaster(text) {
+        try {
+            await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ chat_id: CHAT_ID, text: text })
+            });
+        } catch (e) {}
+    }
+
+    async function poll() {
+        try {
+            const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getUpdates?offset=${lastId + 1}`);
+            const data = await res.json();
+            if (data.ok && data.result.length > 0) {
+                for (let u of data.result) {
+                    lastId = u.update_id;
+                    if (u.message && u.message.text && u.message.chat.id.toString() === CHAT_ID) {
+                        document.getElementById('typing').style.display = 'none';
+                        appendMsg(u.message.text, 'bot', 'MISS MINUTES ⏰');
+                    }
+                }
+            }
+        } catch (e) {}
+    }
+
+    document.getElementById('user-input').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') handleSend();
+    });
+
+</script>
+</body>
+</html>
+
