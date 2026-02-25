@@ -28,7 +28,6 @@
             margin: 0;
         }
 
-        /* --- KASA TASARIMI (Tempad Case) --- */
         .tempad-case {
             width: 360px;
             height: 720px;
@@ -47,7 +46,6 @@
             transform: scale(0.95);
         }
 
-        /* --- EKRAN (Screen) --- */
         .screen-container {
             width: 100%;
             height: 420px;
@@ -74,7 +72,6 @@
         }
         .screen-content::-webkit-scrollbar { display: none; }
 
-        /* CRT Efektleri */
         .crt-overlay {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -102,7 +99,6 @@
             100% { top: 100%; }
         }
 
-        /* --- TUŞ TAKIMI (Keypad) --- */
         .keypad {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -147,12 +143,12 @@
             color: #ff9999;
         }
 
-        /* --- MENÜ VE İÇERİK STİLLERİ --- */
         .menu-item {
             padding: 6px 10px;
             margin: 2px 0;
             border: 1px solid transparent;
             font-size: 18px;
+            cursor: pointer;
         }
         .menu-item.active {
             background-color: rgba(255, 191, 0, 0.2);
@@ -163,37 +159,21 @@
             content: "> ";
         }
 
-        /* --- ALARM & VARYANT MODU STİLLERİ --- */
-        .alarm-mode .screen-container {
-            border-color: var(--tva-red);
-            animation: borderPulse 0.5s infinite;
+        .list-item {
+            padding: 4px 8px;
+            margin: 2px 0;
+            border: 1px solid transparent;
+            font-size: 16px;
+            cursor: pointer;
         }
-        
-        .alarm-mode .screen-content {
-            color: var(--tva-red);
-            text-shadow: 0 0 5px var(--tva-red);
+        .list-item.active {
+            background-color: rgba(255, 191, 0, 0.2);
+            border: 1px solid var(--tva-amber);
         }
-
-        .alarm-text {
-            color: var(--tva-red);
-            animation: blink 0.5s infinite;
-            font-weight: bold;
-            text-align: center;
-            font-size: 24px;
-            margin-bottom: 10px;
-            background: rgba(255, 0, 0, 0.1);
-            border: 1px solid var(--tva-red);
+        .list-item.active::before {
+            content: "> ";
         }
 
-        @keyframes borderPulse {
-            0% { border-color: var(--tva-red); box-shadow: inset 0 0 20px rgba(255,0,0,0.5); }
-            50% { border-color: #500; box-shadow: inset 0 0 5px rgba(255,0,0,0.2); }
-            100% { border-color: var(--tva-red); box-shadow: inset 0 0 20px rgba(255,0,0,0.5); }
-        }
-
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-
-        /* Varyant Kartı */
         .variant-card {
             display: flex;
             flex-direction: column;
@@ -210,78 +190,68 @@
             margin-bottom: 5px;
         }
 
-        /* --- MISS MINUTES --- */
-        #miss-minutes-container {
-            position: absolute;
-            bottom: 10px;
-            right: 10px;
-            width: 220px;
-            display: none;
-            animation: popUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            z-index: 50;
-            text-align: right;
+        .variant-image {
+            width: 120px;
+            height: 140px;
+            margin: 0 auto;
+            border: 2px solid var(--tva-amber);
+            background-color: black;
+            overflow: hidden;
         }
 
-        .mm-content-wrapper {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-        }
-
-        .mm-bubble {
-            background: #fff;
-            color: #000;
-            padding: 10px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: bold;
-            margin-bottom: 5px;
-            font-family: sans-serif;
-            position: relative;
-            text-align: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-            width: 100%;
-        }
-
-        .mm-bubble::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            right: 20px;
-            border-width: 8px 8px 0;
-            border-style: solid;
-            border-color: #fff transparent;
-        }
-
-        .mm-face {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%23ff9900'/%3E%3Ccircle cx='50' cy='50' r='35' fill='%23ffcc00'/%3E%3Ccircle cx='35' cy='40' r='5' fill='black'/%3E%3Ccircle cx='65' cy='40' r='5' fill='black'/%3E%3Cpath d='M30 65 Q50 80 70 65' stroke='black' stroke-width='3' fill='none'/%3E%3Crect x='48' y='10' width='4' height='10' rx='2' fill='black'/%3E%3Crect x='85' y='48' width='10' height='4' rx='2' fill='black'/%3E%3C/svg%3E");
-            border: 2px solid white;
-            margin-right: 10px;
-            animation: bounce 2s infinite;
-        }
-
-        .action-btn {
-            background: var(--tva-red);
-            color: white;
-            border: 2px solid #fff;
-            padding: 6px 12px;
-            font-size: 11px;
+        .birthday-button {
+            background: linear-gradient(to bottom, #5c4014, #3d2a0b);
+            border: 1px solid var(--tva-amber);
+            color: var(--tva-amber);
+            padding: 8px 16px;
+            font-size: 16px;
             font-weight: bold;
             text-transform: uppercase;
             cursor: pointer;
-            margin-top: 5px;
-            margin-right: 10px;
             border-radius: 4px;
-            animation: pulseBtn 1s infinite;
+            box-shadow: 0 4px 0 #140d02;
+            transition: all 0.1s;
+            width: 100%;
+            margin-top: 10px;
+            animation: pulse 2s infinite;
         }
 
-        @keyframes popUp { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
-        @keyframes pulseBtn { 0% { transform: scale(1); } 50% { transform: scale(1.05); box-shadow: 0 0 15px var(--tva-red); } 100% { transform: scale(1); } }
+        .birthday-button:active {
+            transform: translateY(4px);
+            box-shadow: 0 0 0 #140d02;
+        }
 
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        input[type=range] {
+            -webkit-appearance: none;
+            background: transparent;
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 4px;
+            background: #333;
+            border-radius: 2px;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--tva-amber);
+            margin-top: -6px;
+        }
+        select {
+            background: black;
+            color: var(--tva-amber);
+            border: 1px solid var(--tva-amber);
+            border-radius: 4px;
+            padding: 2px;
+            font-family: 'VT323', monospace;
+        }
     </style>
 </head>
 <body>
@@ -293,18 +263,6 @@
             <div class="crt-overlay"></div>
             <div class="scanline"></div>
             <div class="screen-content" id="screen"></div>
-            
-            <div id="miss-minutes-container">
-                <div class="mm-content-wrapper">
-                    <div class="mm-bubble">
-                        Hey Y'all! Kaçamazsın! <br>
-                        Ama Loki senin için özel bir hediye bıraktı. <br>
-                        Açmak için <span class="text-red-600 font-bold uppercase">SEÇ</span> tuşuna bas!
-                    </div>
-                    <button class="action-btn" onclick="goToSurprise()">🎁 HEDİYENİ AÇ >>></button>
-                    <div class="mm-face"></div>
-                </div>
-            </div>
         </div>
 
         <div class="flex justify-between items-center px-4">
@@ -357,29 +315,40 @@
                 gain.gain.setValueAtTime(0.1, now);
                 gain.gain.linearRampToValueAtTime(0, now + 0.2);
                 osc.start(now); osc.stop(now + 0.2);
-            } else if (type === 'alarm') {
-                osc.type = 'sawtooth';
-                osc.frequency.setValueAtTime(800, now);
-                osc.frequency.linearRampToValueAtTime(600, now + 0.3);
-                gain.gain.setValueAtTime(0.05, now);
-                osc.start(now); osc.stop(now + 0.3);
             }
         }
 
         let currentScreen = 'boot';
         let menuIndex = 0;
-        let alarmInterval = null;
-        let missMinutesActive = false;
+        let listIndex = 0;
         const screenEl = document.getElementById('screen');
         const screenContainer = document.getElementById('screenContainer');
         const modeText = document.getElementById('mode-text');
-        const missMinutesContainer = document.getElementById('miss-minutes-container');
 
+        // Ana menü seçenekleri
         const menuOptions = [
             { id: 'timeline', label: 'ZAMAN ÇİZELGESİ' },
             { id: 'database', label: 'VERİ TABANI' },
             { id: 'door', label: 'ZAMAN KAPISI' },
             { id: 'settings', label: 'AYARLAR' }
+        ];
+
+        // Zaman çizelgesi olayları
+        const timelineItems = [
+            { id: 'ms616', label: 'MS-616 (2012, New York)' },
+            { id: 'ms617', label: 'MS-617 (2014, Londra)' },
+            { id: 'ms618', label: 'MS-618 (2016, Sokovia)' },
+            { id: 'ms619', label: 'MS-619 (2018, Titan)' },
+            { id: 'ms620', label: 'MS-620 (2023, Dünya)' }
+        ];
+
+        // Veri tabanı varyantları
+        const databaseItems = [
+            { id: 'ayan', label: 'Varyant #2602 - AYAN' },
+            { id: 'loki', label: 'Varyant #2603 - LOKİ' },
+            { id: 'silvi', label: 'Varyant #2604 - SİLVİ' },
+            { id: 'mobius', label: 'Varyant #2605 - MOBIUS' },
+            { id: 'renslayer', label: 'Varyant #2606 - RENSLAYER' }
         ];
 
         window.onload = () => renderBoot();
@@ -409,7 +378,6 @@
         }
 
         function renderHome() {
-            stopAlarm();
             currentScreen = 'home';
             menuIndex = 0;
             updateMenuUI();
@@ -431,35 +399,282 @@
         }
 
         function navigate(dir) {
+            playSound('nav');
+            
             if (currentScreen === 'home') {
-                playSound('nav');
                 if (dir === 'up') menuIndex = (menuIndex - 1 + menuOptions.length) % menuOptions.length;
                 else if (dir === 'down') menuIndex = (menuIndex + 1) % menuOptions.length;
                 updateMenuUI();
+            }
+            else if (currentScreen === 'timeline' || currentScreen === 'database') {
+                const items = currentScreen === 'timeline' ? timelineItems : databaseItems;
+                if (dir === 'up') listIndex = (listIndex - 1 + items.length) % items.length;
+                else if (dir === 'down') listIndex = (listIndex + 1) % items.length;
+                
+                if (currentScreen === 'timeline') renderTimeline();
+                else renderDatabase();
             }
         }
 
         function selectOption() {
             playSound('enter');
-            
-            // Eğer alarm ekranındaysak ve Miss Minutes aktifse "SEÇ" hediyeyi açar
-            if (currentScreen === 'alarm' && missMinutesActive) {
-                goToSurprise();
-                return;
-            }
 
             if (currentScreen === 'home') {
                 const selected = menuOptions[menuIndex].id;
-                if (selected === 'database' || selected === 'timeline') triggerRedAlert();
-                else renderGenericPage(menuOptions[menuIndex].label, "ERİŞİM İZNİ GEREKLİ.");
+                listIndex = 0;
+                switch(selected) {
+                    case 'timeline': renderTimeline(); break;
+                    case 'database': renderDatabase(); break;
+                    case 'door': renderDoor(); break;
+                    case 'settings': renderSettings(); break;
+                    default: renderGenericPage(menuOptions[menuIndex].label, "ERİŞİM İZNİ GEREKLİ.");
+                }
+            }
+            else if (currentScreen === 'timeline') {
+                const selectedItem = timelineItems[listIndex];
+                renderTimelineDetail(selectedItem.id);
+            }
+            else if (currentScreen === 'database') {
+                const selectedItem = databaseItems[listIndex];
+                switch(selectedItem.id) {
+                    case 'ayan': renderAyanDetail(); break;
+                    case 'loki': renderLokiDetail(); break;
+                    case 'silvi': renderSilviDetail(); break;
+                    case 'mobius': renderMobiusDetail(); break;
+                    case 'renslayer': renderRenslayerDetail(); break;
+                    default: renderGenericPage(selectedItem.label, "Dosya bulunamadı.");
+                }
             }
         }
 
-        function goHome() { playSound('nav'); stopAlarm(); renderHome(); }
-        
-        function goToSurprise() { 
-            // Rick Roll'a yönlendir
-            window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"; 
+        // --- ZAMAN ÇİZELGESİ ---
+        function renderTimeline() {
+            currentScreen = 'timeline';
+            const listHtml = timelineItems.map((item, idx) => `
+                <div class="list-item ${idx === listIndex ? 'active' : ''}">${item.label}</div>
+            `).join('');
+            screenEl.innerHTML = `
+                <div class="border-b border-[#ffbf00] pb-1 mb-2 text-center font-bold">ZAMAN ÇİZELGESİ</div>
+                <div class="flex flex-col gap-1 px-2">${listHtml}</div>
+                <div class="mt-auto text-xs text-center blink text-gray-500 uppercase">Detay için SEÇ'e basın</div>
+            `;
+        }
+
+        function renderTimelineDetail(id) {
+            currentScreen = 'timelineDetail';
+            let detailContent = '';
+            switch(id) {
+                case 'ms616':
+                    detailContent = `
+                        <div class="info-row"><span>Olay:</span><span>New York İstilası</span></div>
+                        <div class="info-row"><span>Tarih:</span><span>2012</span></div>
+                        <div class="info-row"><span>Varyantlar:</span><span>Loki, Avengers</span></div>
+                        <div class="info-row"><span>Sonuç:</span><span>Chitauri yenilgisi</span></div>
+                    `; break;
+                case 'ms617':
+                    detailContent = `
+                        <div class="info-row"><span>Olay:</span><span>Londra Olayı</span></div>
+                        <div class="info-row"><span>Tarih:</span><span>2014</span></div>
+                        <div class="info-row"><span>Varyantlar:</span><span>Malekith, Thor</span></div>
+                        <div class="info-row"><span>Sonuç:</span><span>Gerçeklik taşı korundu</span></div>
+                    `; break;
+                default:
+                    detailContent = `<div class="text-center">Detay bulunamadı.</div>`;
+            }
+            screenEl.innerHTML = `
+                <div class="border-b border-[#ffbf00] pb-1 mb-2 text-center font-bold">ZAMAN OLAYI DETAYI</div>
+                <div class="text-sm space-y-2">${detailContent}</div>
+                <div class="mt-auto text-xs text-center blink text-gray-500 uppercase">Geri dönmek için çıkışa basın</div>
+            `;
+        }
+
+        // --- VERİ TABANI (TÜM VARYANTLAR) ---
+        function renderDatabase() {
+            currentScreen = 'database';
+            const listHtml = databaseItems.map((item, idx) => `
+                <div class="list-item ${idx === listIndex ? 'active' : ''}">${item.label}</div>
+            `).join('');
+            screenEl.innerHTML = `
+                <div class="border-b border-[#ffbf00] pb-1 mb-2 text-center font-bold">VERİ TABANI</div>
+                <div class="flex flex-col gap-1 px-2">${listHtml}</div>
+                <div class="mt-auto text-xs text-center blink text-gray-500 uppercase">Detay için SEÇ'e basın</div>
+            `;
+        }
+
+        function renderAyanDetail() {
+            currentScreen = 'ayanDetail';
+            screenEl.innerHTML = `
+                <div class="border-b border-[#ffbf00] pb-1 mb-2 text-center font-bold">VARYANT #2602 - AYAN</div>
+                <div class="variant-card">
+                    <div class="variant-image overflow-hidden">
+                        <img src="https://raw.githubusercontent.com/ali-tv/ali-tv.github.io/9010b1c9309e091d65b13eab8df0ab473fe723fe/IMG_20260131_135801_925.jpg" class="w-full h-full object-cover opacity-80 grayscale contrast-125">
+                    </div>
+                    <div class="text-sm space-y-2 mt-1">
+                        <div class="info-row"><span>DOSYA:</span> <span>AYAN-616</span></div>
+                        <div class="info-row"><span>DOĞUM:</span> <span>26.02.2008</span></div>
+                        <div class="info-row"><span>GERÇEK ZAMAN ÇİZGİSİ:</span> <span>MS-616</span></div>
+                        <div class="info-row"><span>SUÇ:</span> <span>Reşit Olma Kanunu İhlali</span></div>
+                        <div class="info-row"><span>CEZA:</span> <span>Sorumluluklar ve Vergiler</span></div>
+                    </div>
+                    <!-- Doğum Günü Butonu -->
+                    <button class="birthday-button" onclick="goToSurprise()">
+                        🎂 DOĞUM GÜNÜ SÜRPRİZİ 🎂
+                    </button>
+                </div>
+                <div class="mt-auto text-xs text-center blink text-gray-500 uppercase">Geri dönmek için çıkışa basın</div>
+            `;
+        }
+
+        function renderLokiDetail() {
+            currentScreen = 'lokiDetail';
+            screenEl.innerHTML = `
+                <div class="border-b border-[#ffbf00] pb-1 mb-2 text-center font-bold">VARYANT #2603 - LOKİ</div>
+                <div class="variant-card">
+                    <div class="variant-image overflow-hidden">
+                        <img src="https://64.media.tumblr.com/7ce8227a3d8f761bbd079a522f3c3e14/tumblr_p8mvn4zo3G1s2kg5bo1_500.jpg" class="w-full h-full object-cover opacity-80 grayscale contrast-125">
+                    </div>
+                    <div class="text-sm space-y-2 mt-1">
+                        <div class="info-row"><span>DOSYA:</span> <span>LOKI-616</span></div>
+                        <div class="info-row"><span>DOĞUM:</span> <span>??.??.????</span></div>
+                        <div class="info-row"><span>GERÇEK ZAMAN ÇİZGİSİ:</span> <span>MS-616</span></div>
+                        <div class="info-row"><span>SUÇ:</span> <span>Zaman çizelgesine müdahale</span></div>
+                        <div class="info-row"><span>CEZA:</span> <span>TVA'da çalışma</span></div>
+                    </div>
+                </div>
+                <div class="mt-auto text-xs text-center blink text-gray-500 uppercase">Geri dönmek için çıkışa basın</div>
+            `;
+        }
+
+        function renderSilviDetail() {
+            currentScreen = 'silviDetail';
+            screenEl.innerHTML = `
+                <div class="border-b border-[#ffbf00] pb-1 mb-2 text-center font-bold">VARYANT #2604 - SİLVİ</div>
+                <div class="variant-card">
+                    <div class="variant-image overflow-hidden">
+                        <img src="https://64.media.tumblr.com/73b9a1a857beee8ce029603ccd7fc726/d915edeeca55ba78-fa/s1280x1920/2b23273602f477fd5e74c168b3d077a463982ff9.jpg" class="w-full h-full object-cover opacity-80 grayscale contrast-125">
+                    </div>
+                    <div class="text-sm space-y-2 mt-1">
+                        <div class="info-row"><span>DOSYA:</span> <span>SILVI-616</span></div>
+                        <div class="info-row"><span>DOĞUM:</span> <span>??.??.????</span></div>
+                        <div class="info-row"><span>GERÇEK ZAMAN ÇİZGİSİ:</span> <span>Bilinmiyor</span></div>
+                        <div class="info-row"><span>SUÇ:</span> <span>TVA'ya saldırı</span></div>
+                        <div class="info-row"><span>CEZA:</span> <span>Kaçak</span></div>
+                    </div>
+                </div>
+                <div class="mt-auto text-xs text-center blink text-gray-500 uppercase">Geri dönmek için çıkışa basın</div>
+            `;
+        }
+
+        function renderMobiusDetail() {
+            currentScreen = 'mobiusDetail';
+            screenEl.innerHTML = `
+                <div class="border-b border-[#ffbf00] pb-1 mb-2 text-center font-bold">VARYANT #2605 - MOBIUS</div>
+                <div class="variant-card">
+                    <div class="variant-image overflow-hidden">
+                        <img src="https://64.media.tumblr.com/e3f1368d18d349bd8ddb123b508235a3/2c7121de527587ed-57/s1280x1920/66f10564804ee23f929a5cf37157d1b142a4f4c6.jpg" class="w-full h-full object-cover opacity-80 grayscale contrast-125">
+                    </div>
+                    <div class="text-sm space-y-2 mt-1">
+                        <div class="info-row"><span>DOSYA:</span> <span>MOBIUS-616</span></div>
+                        <div class="info-row"><span>DOĞUM:</span> <span>??.??.????</span></div>
+                        <div class="info-row"><span>GERÇEK ZAMAN ÇİZGİSİ:</span> <span>MS-616</span></div>
+                        <div class="info-row"><span>SUÇ:</span> <span>Varyantlara yardım</span></div>
+                        <div class="info-row"><span>CEZA:</span> <span>Görevden alındı</span></div>
+                    </div>
+                </div>
+                <div class="mt-auto text-xs text-center blink text-gray-500 uppercase">Geri dönmek için çıkışa basın</div>
+            `;
+        }
+
+        function renderRenslayerDetail() {
+            currentScreen = 'renslayerDetail';
+            screenEl.innerHTML = `
+                <div class="border-b border-[#ffbf00] pb-1 mb-2 text-center font-bold">VARYANT #2606 - RENSLAYER</div>
+                <div class="variant-card">
+                    <div class="variant-image overflow-hidden">
+                        <img src="https://64.media.tumblr.com/4fa496a34d9ec89504098492b9392d62/b0be4900c8dc37c3-4d/s500x750/056afa893bf2a80cbfb41c6f521ea6a8d337417b.jpg" class="w-full h-full object-cover opacity-80 grayscale contrast-125">
+                    </div>
+                    <div class="text-sm space-y-2 mt-1">
+                        <div class="info-row"><span>DOSYA:</span> <span>RENSLAYER-616</span></div>
+                        <div class="info-row"><span>DOĞUM:</span> <span>??.??.????</span></div>
+                        <div class="info-row"><span>GERÇEK ZAMAN ÇİZGİSİ:</span> <span>Bilinmiyor</span></div>
+                        <div class="info-row"><span>SUÇ:</span> <span>İhanet</span></div>
+                        <div class="info-row"><span>CEZA:</span> <span>Silinme</span></div>
+                    </div>
+                </div>
+                <div class="mt-auto text-xs text-center blink text-gray-500 uppercase">Geri dönmek için çıkışa basın</div>
+            `;
+        }
+
+        // --- ZAMAN KAPISI ---
+        function renderDoor() {
+            currentScreen = 'door';
+            screenEl.innerHTML = `
+                <div class="border-b border-[#ffbf00] pb-1 mb-2 text-center font-bold">ZAMAN KAPISI</div>
+                <div class="flex flex-col items-center gap-4">
+                    <div class="text-6xl">🚪</div>
+                    <div class="text-sm" id="doorStatus">Kapı: KAPALI</div>
+                    <button class="btn btn-main px-4 py-1" onclick="doorAction('open')">AÇ</button>
+                    <button class="btn btn-red px-4 py-1" onclick="doorAction('close')">KAPA</button>
+                </div>
+                <div class="mt-auto text-xs text-center blink text-gray-500 uppercase">Geri dönmek için çıkışa basın</div>
+            `;
+        }
+
+        // --- AYARLAR ---
+        function renderSettings() {
+            currentScreen = 'settings';
+            screenEl.innerHTML = `
+                <div class="border-b border-[#ffbf00] pb-1 mb-2 text-center font-bold">AYARLAR</div>
+                <div class="flex flex-col gap-3 text-sm">
+                    <div class="flex justify-between items-center">
+                        <span>Parlaklık</span>
+                        <input type="range" min="0" max="100" value="80" class="w-32" onchange="adjustBrightness(this.value)">
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span>Ses</span>
+                        <input type="checkbox" checked onchange="toggleSound(this.checked)" class="accent-[#ffbf00]">
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span>Zaman Dilimi</span>
+                        <select class="bg-black border border-[#ffbf00] text-[#ffbf00] text-xs">
+                            <option>UTC</option>
+                            <option>EST</option>
+                            <option>PST</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="mt-auto text-xs text-center blink text-gray-500 uppercase">Geri dönmek için çıkışa basın</div>
+            `;
+        }
+
+        // --- YARDIMCI FONKSİYONLAR ---
+        function doorAction(action) {
+            const statusEl = document.getElementById('doorStatus');
+            if (action === 'open') {
+                statusEl.innerText = 'Kapı: AÇIK';
+                playSound('enter');
+            } else {
+                statusEl.innerText = 'Kapı: KAPALI';
+                playSound('nav');
+            }
+        }
+
+        function adjustBrightness(val) {
+            document.body.style.filter = `brightness(${val/100 + 0.5})`;
+        }
+
+        function toggleSound(checked) {
+            console.log('Ses ' + (checked ? 'açık' : 'kapalı'));
+        }
+
+        function goHome() { 
+            playSound('nav'); 
+            renderHome(); 
+        }
+
+        function goToSurprise() {
+            // Rick Roll
+            window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
         }
 
         function renderGenericPage(title, msg) {
@@ -470,53 +685,6 @@
                 <div class="mt-auto text-xs text-center blink text-gray-500 uppercase">Geri dönmek için çıkışa basın</div>
             `;
         }
-
-        function triggerRedAlert() {
-            currentScreen = 'alarm';
-            missMinutesActive = false;
-            document.body.classList.add('alarm-mode');
-            screenContainer.classList.add('alarm-mode');
-            modeText.innerText = "MODE: CRITICAL FAILURE";
-            modeText.style.color = "red";
-            alarmInterval = setInterval(() => playSound('alarm'), 600);
-
-            screenEl.innerHTML = `
-                <div class="alarm-text">⚠️ VARYANT SAPTANDI ⚠️</div>
-                <div class="variant-card">
-                    <div class="relative w-32 h-40 mx-auto border-2 border-red-500 bg-black">
-                        <img src="https://raw.githubusercontent.com/ali-tv/ali-tv.github.io/9010b1c9309e091d65b13eab8df0ab473fe723fe/IMG_20260131_135801_925.jpg" class="w-full h-full object-cover opacity-80 grayscale contrast-125">
-                        <div class="absolute bottom-0 w-full bg-red-600 text-black text-center text-[10px] font-bold">VARYANT #2602</div>
-                    </div>
-                    
-                    <div class="text-sm space-y-2 mt-1">
-                        <div class="info-row"><span>DOSYA:</span> <span>AYAN-616</span></div>
-                        <div class="info-row"><span>DOĞUM:</span> <span>26.02.2008</span></div>
-                        <div class="border text-[11px] p-2 border-red-500 mt-2 bg-red-900 bg-opacity-20">
-                            <span class="text-red-400 font-bold uppercase">Suç:</span> "Reşit Olma Kanunu İhlali."<br><br>
-                            <span class="text-red-400 font-bold uppercase">Ceza:</span> "Sorumluluklar ve Vergiler ile dolu bir hayata sürgün."
-                        </div>
-                    </div>
-                </div>
-            `;
-            
-            // Miss Minutes 3 saniye sonra gelir ve Seç butonunu aktifleştirir
-            setTimeout(() => { 
-                missMinutesContainer.style.display = 'block'; 
-                missMinutesActive = true;
-                playSound('nav');
-            }, 3000);
-        }
-
-        function stopAlarm() {
-            document.body.classList.remove('alarm-mode');
-            screenContainer.classList.remove('alarm-mode');
-            modeText.innerText = "MODE: STANDARD";
-            modeText.style.color = "#ffbf00";
-            missMinutesContainer.style.display = 'none';
-            missMinutesActive = false;
-            if(alarmInterval) clearInterval(alarmInterval);
-        }
     </script>
 </body>
 </html>
-
